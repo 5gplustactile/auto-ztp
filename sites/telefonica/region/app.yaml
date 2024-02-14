@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: region-clusters-telefonica
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: telefonica
+    server: 'https://kubernetes.default.svc'
+  sources:
+    - path: sites/telefonica/region/helm-region-chart
+      repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+      targetRevision: main
+      helm:
+        valueFiles:
+          - $values/telefonica/region/values.yaml
+    - repoURL: 'https://github.com/andresanaya21/tactile5g-local-provisioning.git'
+      targetRevision: 'dt/telefonica'
+      ref: values
+  project: clusters
+  syncPolicy:
+    automated: {}
+    #      prune: true
+    #      allowEmpty: true
+    #      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+#      - PruneLast=true
+#      - PrunePropagationPolicy=background
+#    retry:
+#      limit: 5
+#      backoff:
+#        duration: 5s
+#        maxDuration: 2m
+#  refresh:
+#    external: true
+#    interval: 2m

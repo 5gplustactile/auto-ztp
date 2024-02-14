@@ -1,0 +1,8 @@
+[instances]
+ec2-0 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/environment/outpost-key.pem ansible_host=ip-10-0-4-214.eu-west-3.compute.internal
+
+[local]
+localhost  ansible_connection=local
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

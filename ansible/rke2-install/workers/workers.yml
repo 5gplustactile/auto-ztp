@@ -1,0 +1,128 @@
+---
+# tasks file for ansible-rk2
+
+- name: stop firewall
+  ansible.builtin.systemd:
+    state: stopped
+    name: ufw
+  ignore_errors: true
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: install nfs-common package
+  ansible.builtin.apt:
+    name: nfs-common
+    state: latest
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: Remove dependencies that are no longer required
+  ansible.builtin.apt:
+    autoremove: yes
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: create rke2 directory
+  ansible.builtin.file:
+    path: /etc/rancher/rke2/
+    state: directory
+    recurse: true
+    mode: '0755'
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: Get RKE2 node token
+  command: sudo cat /var/lib/rancher/rke2/server/token
+  register: token
+  run_once: true
+
+- name: adding content config.yaml - region nodes
+  ansible.builtin.blockinfile:
+    path: /etc/rancher/rke2/config.yaml
+    create: true
+    block: |
+      disable:
+        - rke2-ingress-nginx
+      node-label:
+        - "node=region"
+        - "cluster=cluster-mgmt"
+      cloud-provider-name: aws
+      server: https://{{ nlb }}:9345
+      token: {{ token.stdout }}
+  loop: "{{ groups['region'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: adding content config.yaml - edge nodes
+  ansible.builtin.blockinfile:
+    path: /etc/rancher/rke2/config.yaml
+    create: true
+    block: |
+      disable:
+        - rke2-ingress-nginx
+      node-label:
+        - "node=edge"
+        - "cluster=cluster-mgmt"
+      cloud-provider-name: aws
+      server: https://{{ nlb }}:9345
+      token: {{ token.stdout }}
+  loop: "{{ groups['edge'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: adding content config.yaml - edge nodes
+  ansible.builtin.blockinfile:
+    path: /etc/rancher/rke2/config.yaml
+    create: true
+    block: |
+      disable:
+        - rke2-ingress-nginx
+      node-label:
+        - "node=external-node"
+        - "cluster=cluster-mgmt"
+      cloud-provider-name: aws
+      server: https://{{ nlb }}:9345
+      token: {{ token.stdout }}
+  loop: "{{ groups['external-nodes'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: download RKE2 install script
+  get_url:
+    url: https://get.rke2.io
+    dest: /usr/local/bin/install-rke2.sh
+    mode: 0755
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+
+- name: install rke2 workers
+  ansible.builtin.shell: |
+     INSTALL_RKE2_TYPE="agent" \
+     bash /usr/local/bin/install-rke2.sh
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: enable and start rke2
+  ansible.builtin.systemd:
+    name: rke2-agent.service
+    enabled: true
+    state: started
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: Install netplan.io
+  apt:
+    name: netplan.io
+    state: present
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: Configure ens6 interface
+  template:
+    src: ./01-netcfg.yaml
+    dest: /etc/netplan/ens6.yaml
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+
+- name: apply netplan
+  command: netplan apply && ip link set ens6 up
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"

@@ -1,0 +1,20 @@
+
+project: telefonica
+#certManager:
+#  enable: true
+#  version: v1.12.3
+#  servers:
+#    - name: "telefonica-edge-example-in-edge"
+#      url: https://internal-p3cj0e4pkf2soq8v61oejma5iwpq-k8s-1588845274.eu-west-3.elb.amazonaws.com:6443
+#metalLB:
+#  enable: true
+#  version: 0.13.12
+#  servers:
+#    - name: "telefonica-edge-example-in-edge"
+#      url: https://internal-p3cj0e4pkf2soq8v61oejma5iwpq-k8s-1588845274.eu-west-3.elb.amazonaws.com:6443
+#ingress:
+#  enable: true
+#  version: 4.9.0
+#  servers:
+#    - name: "telefonica-edge-example-in-edge"
+#      url: https://internal-p3cj0e4pkf2soq8v61oejma5iwpq-k8s-1588845274.eu-west-3.elb.amazonaws.com:6443      

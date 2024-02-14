@@ -1,0 +1,59 @@
+{{- $metalLB := .Values.metalLB | default dict }}
+{{- if $metalLB.enable | default false }}
+{{- range $metalLB.servers }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ printf "metallb-%s" .name | trunc 63 }}
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: metallb-system
+    server: {{ .url }}
+  source:
+    path: ''
+    repoURL: 'https://metallb.github.io/metallb/'
+    targetRevision: {{ $metalLB.version }}
+    chart: 'metallb'
+  sources: []
+  project: {{ $.Values.project }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ printf "extras-metallb-%s" .name | trunc 63 }}
+  namespace: argocd
+spec:
+  project: {{ $.Values.project }}
+  source:
+    repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+    path: 'templates/cluster-addons/extras/metallb'
+    targetRevision: main
+  destination:
+    namespace: metallb-system
+    server: {{ .url }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+{{- end }}
+{{- end }}

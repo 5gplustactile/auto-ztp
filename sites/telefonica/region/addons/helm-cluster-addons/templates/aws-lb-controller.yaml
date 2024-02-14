@@ -1,0 +1,63 @@
+{{- $awslb := .Values.awslb | default dict }}
+{{- if $awslb.enable | default false }}
+{{- range $awslb.servers }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ printf "ext-awslb-%s" .name | trunc 30 }}
+  namespace: argocd
+spec:
+  project: {{ $.Values.project }}
+  source:
+    repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+    path: 'templates/cluster-addons/extras/awslb'
+    targetRevision: main
+  destination:
+    server: {{ .url }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ printf "awslb-%s" .name | trunc 30 }}
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: awslb-system
+    server: {{ .url }}
+  source:
+    path: ''
+    repoURL: 'https://aws.github.io/eks-charts'
+    targetRevision: {{ $awslb.version }}
+    chart: aws-load-balancer-controller
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        clusterName: {{ printf "%s" .name }}
+  project: {{ $.Values.project }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+{{- end }}
+{{- end }}

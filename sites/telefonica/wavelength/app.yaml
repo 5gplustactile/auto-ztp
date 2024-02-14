@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wavelength-clusters-telefonica
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: telefonica
+    server: 'https://kubernetes.default.svc'
+  sources:
+    - path: sites/telefonica/wavelength/helm-region-chart
+      repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+      targetRevision: main
+      helm:
+        valueFiles:
+          - $values/telefonica/wavelength/values.yaml
+    - repoURL: 'https://github.com/andresanaya21/tactile5g-local-provisioning.git'
+      targetRevision: 'dt/telefonica'
+      ref: values
+  project: clusters
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

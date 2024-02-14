@@ -1,0 +1,21 @@
+---
+# helm module not available using ansible 2.9. Ansible 8 version still not released
+
+- name: ingress nginx
+  block:
+    - name: Add helm repo
+      command: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+    - name: Update helm repo
+      command: helm repo update
+
+    - name: Install ingress nginx
+      command: >
+        helm upgrade -i ingress-nginx ingress-nginx/ingress-nginx
+        --namespace ingress-nginx
+        --create-namespace
+        --set rbac.create=true
+        --set controller.extraArgs."enable-ssl-passthrough=true"
+        --set controller.service.type=ClusterIP 
+        --kubeconfig {{ main_path }}/to-delete/rke2.yaml
+  when: "{{ ingress_nginx.enable }} == true"

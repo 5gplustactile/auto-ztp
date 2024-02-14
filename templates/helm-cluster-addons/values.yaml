@@ -1,0 +1,18 @@
+
+project: 
+certManager:
+  enable: true
+  version: v1.12.3
+  servers:
+    - name: "example-1"
+      url: http://example.com
+    - name: "example-2"
+      url: http://example2.com
+metalLB:
+  enable: true
+  version: 0.13.12
+  servers:
+    - name: "example-1"
+      url: http://example.com
+    - name: "example-2"
+      url: http://example2.com

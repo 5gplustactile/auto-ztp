@@ -1,0 +1,28 @@
+# DNS name of Network Load Balancer
+nlb: new-nlb-tf-655c3cac4dcd6cb7.elb.eu-west-3.amazonaws.com
+
+# main path to deploy ansible
+main_path: "/home/labuser"
+
+# Routes to the internal network. Added with netplan
+workers:
+  routes:
+    - to: 10.11.0.0/16
+      via: 10.11.29.1
+    - to: 10.182.32.0/24
+      via: 10.11.29.1
+
+
+metalLb:
+  enable: true
+  name: ip-pooladdress-local
+  poolAddress: 192.168.1.30-192.168.1.50
+
+cert_manager:
+  enable: true
+
+aws_lb_controller:
+  enable: true
+  
+ingress_nginx:
+  enable: false

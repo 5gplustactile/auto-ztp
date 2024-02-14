@@ -1,0 +1,90 @@
+awslb:
+  enable: true
+  servers: []
+  version: 1.6.2
+certManager:
+  enable: true
+  servers: []
+  version: v1.13.3
+grafana:
+  enable: true
+  servers:
+  - name: telefonica-region-example-region-0
+    url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        annotations:
+          alb.ingress.kubernetes.io/load-balancer-name: grafana-system
+          alb.ingress.kubernetes.io/scheme: internal
+          alb.ingress.kubernetes.io/tags: tactile5g/digital-twins=grafana-system
+          alb.ingress.kubernetes.io/target-type: instance
+        className: alb
+        enabled: false
+        environment: region
+  version: main
+ingress:
+  enable: false
+  servers: []
+  version: 4.9.0
+kubeClarity:
+  enable: false
+  servers:
+  - name: telefonica-region-example-region-0
+    url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
+    values:
+      kubeclarity:
+        ingress:
+          annotations:
+            alb.ingress.kubernetes.io/load-balancer-name: kubeclarify-system
+            alb.ingress.kubernetes.io/scheme: internal
+            alb.ingress.kubernetes.io/tags: tactile5g/digital-twins=kubeclarify-system
+            alb.ingress.kubernetes.io/target-type: instance
+          enabled: false
+          ingressClassName: alb
+        service:
+          type: LoadBalancer
+  version: v2.23.1
+longhorn:
+  enable: false
+  servers:
+  - name: telefonica-region-example-region-0
+    url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        enabled: false
+        host: storage.tactile5g.int
+        ingressClassName: nginx
+  version: 1.6.0
+metalLB:
+  enable: false
+  servers: []
+  version: 0.13.12
+metricServer:
+  enable: true
+  servers:
+  - name: telefonica-region-example-region-0
+    url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-942763084.eu-west-3.elb.amazonaws.com:6443
+  version: 6.9.3
+project: telefonica
+prometheus:
+  enable: true
+  servers:
+  - name: telefonica-region-example-region-0
+    url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        className: alb
+        enabled: false
+        environment: region
+  version: main
+skooner:
+  enable: false
+  servers:
+  - name: telefonica-region-example-region-0
+    url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        className: alb
+        enabled: false
+        environment: region
+  version: main

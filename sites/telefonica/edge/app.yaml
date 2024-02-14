@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: edge-clusters-telefonica
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: telefonica
+    server: 'https://kubernetes.default.svc'
+  sources:
+    - path: sites/telefonica/edge/helm-edge-chart
+      repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+      targetRevision: main
+      helm:
+        valueFiles:
+          - $values/telefonica/edge/values.yaml
+    - repoURL: 'https://github.com/andresanaya21/tactile5g-local-provisioning.git'
+      targetRevision: 'dt/telefonica'
+      ref: values
+  project: clusters
+  syncPolicy:
+    automated: {}
+    #      prune: true
+    #      allowEmpty: true
+    #      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+#      - PruneLast=true
+#      - PrunePropagationPolicy=background

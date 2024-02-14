@@ -1,0 +1,19 @@
+---
+
+- name: netplan edge instances
+  hosts: instances
+  become: true
+
+  tasks:
+    - name: Install netplan.io
+      apt:
+        name: netplan.io
+        state: present
+    
+    - name: Configure ens6 interface
+      template:
+        src: ./01-netcfg.yaml
+        dest: /etc/netplan/ens6.yaml
+    
+    - name: apply netplan
+      command: netplan apply && ip link set ens6 up

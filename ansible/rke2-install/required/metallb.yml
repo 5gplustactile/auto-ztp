@@ -1,0 +1,51 @@
+---
+- name: MetaLB block
+  block:
+    - name: Get the latest release tag of MetalLB
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/metallb/metallb/releases/latest
+        return_content: yes
+      register: json_output
+      failed_when: json_output.status != 200
+
+    - name: Set MetalLB_RTAG variable
+      ansible.builtin.set_fact:
+        MetalLB_RTAG: "{{ (json_output.json.tag_name | regex_replace('v','')) }}"
+
+    - name: Download metallb-native.yaml from GitHub
+      get_url:
+        url: "https://raw.githubusercontent.com/metallb/metallb/v{{ MetalLB_RTAG }}/config/manifests/metallb-native.yaml"
+        dest: "{{ main_path }}/to-delete/metallb-native.yaml"
+        
+    - name: Apply the configuration using kubectl
+      command: |
+        kubectl apply -f {{ main_path }}/to-delete/metallb-native.yaml --kubeconfig {{ main_path }}/to-delete/rke2.yaml
+
+    - name: Pause for 5 minutes to build app cache
+      ansible.builtin.pause:
+        seconds: 30
+        prompt: "waiting to metallb is ready"
+
+    - name: Create metallb configuration file
+      blockinfile:
+        path: "{{ main_path }}/to-delete/ipaddress_pools.yaml"
+        create: yes
+        block: |
+          apiVersion: metallb.io/v1beta1
+          kind: IPAddressPool
+          metadata:
+            name: "{{ metalLb.name }}"
+            namespace: metallb-system
+          spec:
+            addresses:
+            - "{{ metalLb.poolAddress }}"
+          ---
+          apiVersion: metallb.io/v1beta1
+          kind: L2Advertisement
+          metadata:
+            name: l2-advert
+            namespace: metallb-system
+
+    - name: Apply metallb configuration
+      command: kubectl apply -f  {{ main_path }}/to-delete/ipaddress_pools.yaml --kubeconfig {{ main_path }}/to-delete/rke2.yaml
+  when: "{{ metalLb.enable }} == true"

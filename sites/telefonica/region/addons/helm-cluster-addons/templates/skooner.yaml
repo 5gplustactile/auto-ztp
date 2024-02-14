@@ -1,0 +1,35 @@
+{{- $skooner := .Values.skooner | default dict }}
+{{- if $skooner.enable | default false }}
+{{- range $skooner.servers }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ printf "skooner-%s" .name | trunc 50 }}
+  namespace: argocd
+spec:
+  project: {{ $.Values.project }}
+  source:
+    repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+    path: 'templates/cluster-addons/monitoring/skooner'
+    targetRevision: {{ $skooner.version }}
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        {{ toYaml .values | nindent 8 }}
+  destination:
+    namespace: skooner-system
+    server: {{ .url }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+{{- end }}
+{{- end }}

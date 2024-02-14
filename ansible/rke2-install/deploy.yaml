@@ -1,0 +1,109 @@
+
+- name: master-0
+  hosts: masters[0]
+  become: true
+  vars_files:
+       - common_vars.yml
+
+  tasks:
+    - name: install rke2 in master-0
+      ansible.builtin.import_tasks: ./masters/master-0.yml
+
+    - name: install rke2 in masters
+      ansible.builtin.import_tasks: ./masters/masters.yml
+      
+    - name: install rke2 in workers
+      ansible.builtin.import_tasks: ./workers/workers.yml
+
+- name: pip3 operations with Ansible
+  hosts: masters
+  become: yes
+  gather_facts: no
+  tasks:
+  
+    - name: update all packages to their latest version
+      ansible.builtin.apt:
+        update_cache: yes
+        
+    - name: install pip
+      ansible.builtin.apt:
+        name: python3-pip
+        state: latest
+        
+    - name: install Python packages
+      pip:
+        name:
+          - PyYAML
+          - kubernetes
+          - pyhelm
+          - openshift
+          - grpcio
+        executable: pip3
+        state: present
+
+- name: getting kubeconfig from masters
+  hosts: masters[0]
+  vars_files:
+       - common_vars.yml
+  tasks:
+    - name: to-delete folder
+      ansible.builtin.file:
+        path: "{{ main_path }}/to-delete"
+        state: directory
+      become: yes
+      tags: test
+
+    - name: kubeconfig
+      ansible.builtin.fetch:
+        src: /etc/rancher/rke2/rke2.yaml
+        dest: "{{ main_path }}/to-delete/rke2.yaml"
+        flat: yes
+      tags: test
+    
+    - name: replace 127.0.0.1 with "{{ nlb }}" in "{{ main_path }}/to-delete/rke2.yaml"
+      replace:
+        path: "{{ main_path }}/to-delete/rke2.yaml"
+        regexp: '127\.0\.0\.1'
+        replace: '{{ nlb }}'
+      delegate_to: localhost
+      tags: test
+
+- name: Install required folder tools
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  vars_files:
+       - common_vars.yml
+  tasks: 
+    - name: update all packages to their latest version
+      ansible.builtin.apt:
+        update_cache: yes
+      become_user: root
+        
+    - name: install pip
+      ansible.builtin.apt:
+        name: python3-pip
+        state: latest
+        
+    - name: install Python packages
+      pip:
+        name:
+          - PyYAML
+          - kubernetes
+          - pyhelm
+          - openshift
+          - grpcio
+        executable: pip3
+        state: present
+
+    - name: install required metallb
+      ansible.builtin.import_tasks: ./required/metallb.yml
+
+    - name: install required cert-manager
+      ansible.builtin.import_tasks: ./required/cert-manager.yml
+      
+    - name: install required aws load balanacer controller
+      ansible.builtin.import_tasks: ./required/aws-lb-controller.yml
+      
+    - name: install required ingress nginx
+      ansible.builtin.import_tasks: ./required/ingress-nginx.yml

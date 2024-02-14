@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wavelength-clusters-digital-twins-0
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: digital-twins-0
+    server: 'https://kubernetes.default.svc'
+  sources:
+    - path: templates/helm-wavelength-chart
+      repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+      targetRevision: main
+      helm:
+        valueFiles:
+          - $values/digital-twins-0/wavelength/values.yaml
+    - repoURL: 'https://github.com/andresanaya21/tactile5g-local-provisioning.git'
+      targetRevision: 'dt/digital-twins-0'
+      ref: values
+  project: clusters
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

@@ -1,0 +1,43 @@
+{{- $ingress := .Values.ingress | default dict }}
+{{- if $ingress.enable | default false }}
+{{- range $ingress.servers }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ printf "ingress-nginx-%s" .name | trunc 63 }}
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: ingress-system
+    server: {{ .url }}
+  source:
+    path: ''
+    repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    targetRevision: {{ $ingress.version }}
+    chart: 'ingress-nginx'
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        rbac:
+          create: true
+        controller:
+          service:
+            type: NodePort
+          extraArgs:
+            enable-ssl-passthrough: "true"
+  sources: []
+  project: {{ $.Values.project }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+{{- end }}
+{{- end }}
