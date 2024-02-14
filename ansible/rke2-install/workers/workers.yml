@@ -45,7 +45,7 @@
         - rke2-ingress-nginx
       node-label:
         - "node=region"
-        - "cluster=cluster-mgmt"
+        - "cluster={{ name_cluster }}"
       cloud-provider-name: aws
       server: https://{{ nlb }}:9345
       token: {{ token.stdout }}
@@ -61,7 +61,7 @@
         - rke2-ingress-nginx
       node-label:
         - "node=edge"
-        - "cluster=cluster-mgmt"
+        - "cluster={{ name_cluster }}"
       cloud-provider-name: aws
       server: https://{{ nlb }}:9345
       token: {{ token.stdout }}
@@ -77,7 +77,7 @@
         - rke2-ingress-nginx
       node-label:
         - "node=external-node"
-        - "cluster=cluster-mgmt"
+        - "cluster={{ name_cluster }}"
       cloud-provider-name: aws
       server: https://{{ nlb }}:9345
       token: {{ token.stdout }}

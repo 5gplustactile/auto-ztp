@@ -16,6 +16,6 @@
     - name: Install aws load balancer controller
       command: >
         helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system 
-        --set clusterName=cluster-mgmt --set nodeSelector.cluster=cluster-mgmt
+        --set clusterName={{ name_cluster }} --set nodeSelector.cluster={{ name_cluster }}
         --kubeconfig {{ main_path }}/to-delete/rke2.yaml
   when: "{{ aws_lb_controller.enable }} == true"

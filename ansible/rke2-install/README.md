@@ -43,7 +43,7 @@ sudo install /home/ubuntu/ktail /usr/local/bin/ktail
   - ingress-nginx
   - rke2-canal
 
-#### Prodedure
+#### Procedure
 
 - Modify the `ansible/inventory` file including the ansible host to each group
 - Modify the `ansible/common_vars.yml` file including the DNS to nlb and additional variables

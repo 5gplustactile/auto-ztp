@@ -4,6 +4,8 @@ nlb: new-nlb-tf-655c3cac4dcd6cb7.elb.eu-west-3.amazonaws.com
 # main path to deploy ansible
 main_path: "/home/labuser"
 
+name_cluster: "cluster-dc"
+
 # Routes to the internal network. Added with netplan
 workers:
   routes:
