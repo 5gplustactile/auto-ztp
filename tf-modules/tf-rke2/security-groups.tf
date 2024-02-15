@@ -181,5 +181,7 @@ resource "aws_security_group" "sgs_vpc_peering" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = var.tags
+  tags = {
+    subject = "vpc peering to connect digital twins vpc with the cluster mgmt vpc"
+  }
 }
