@@ -16,6 +16,5 @@
         --create-namespace
         --version v1.12.0
         --set installCRDs=true
-        --set installCRDs=true 
         --kubeconfig {{ main_path }}/to-delete/rke2.yaml
   when: "{{ cert_manager.enable }} == true"

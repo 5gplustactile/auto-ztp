@@ -1,6 +1,12 @@
 ---
 # tasks file for ansible-rk2
 
+- name: Set system's hostname
+  ansible.builtin.hostname:
+    name: "{{ ansible_host }}"
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"    
+
 - name: stop firewall
   ansible.builtin.systemd:
     state: stopped
@@ -46,7 +52,7 @@
       node-label:
         - "node=region"
         - "cluster={{ name_cluster }}"
-      cloud-provider-name: aws
+      cloud-provider-name: external
       server: https://{{ nlb }}:9345
       token: {{ token.stdout }}
   loop: "{{ groups['region'][0:] }}"
@@ -62,7 +68,7 @@
       node-label:
         - "node=edge"
         - "cluster={{ name_cluster }}"
-      cloud-provider-name: aws
+      cloud-provider-name: external
       server: https://{{ nlb }}:9345
       token: {{ token.stdout }}
   loop: "{{ groups['edge'][0:] }}"
@@ -78,7 +84,7 @@
       node-label:
         - "node=external-node"
         - "cluster={{ name_cluster }}"
-      cloud-provider-name: aws
+      cloud-provider-name: external
       server: https://{{ nlb }}:9345
       token: {{ token.stdout }}
   loop: "{{ groups['external-nodes'][0:] }}"
@@ -96,7 +102,8 @@
 - name: install rke2 workers
   ansible.builtin.shell: |
      INSTALL_RKE2_TYPE="agent" \
-     bash /usr/local/bin/install-rke2.sh
+     INSTALL_RKE2_CHANNEL=v1.27 \
+     /usr/local/bin/install-rke2.sh
   loop: "{{ groups['workers'][0:] }}"
   delegate_to: "{{ item }}"
 
@@ -126,3 +133,37 @@
   command: netplan apply && ip link set ens6 up
   loop: "{{ groups['workers'][0:] }}"
   delegate_to: "{{ item }}"
+  
+
+- name: Install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+  
+
+- name: Add Kubernetes apt-key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+  
+
+- name: Add Kubernetes apt repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+  
+
+- name: Install kubectl
+  apt:
+    name: kubectl
+    state: present
+    update_cache: yes
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
+  

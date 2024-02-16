@@ -1,7 +1,7 @@
 [masters]
-#rke2-master-0 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-0-205.eu-west-3.compute.internal
-#rke2-master-1 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-4-175.eu-west-3.compute.internal
-#rke2-master-2 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-0-58.eu-west-3.compute.internal
+master-0 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-0-243.eu-west-3.compute.internal
+#master-1 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-4-136.eu-west-3.compute.internal
+#master-2 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-0-184.eu-west-3.compute.internal
 
 
 [workers:children]
@@ -10,14 +10,13 @@ edge
 external-nodes
 
 [region]
-#rke2-worker-1 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-0-113.eu-west-3.compute.internal#
+#worker-2 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-4-133.eu-west-3.compute.internal
 
 [edge]
-#rke2-worker-0 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-4-11.eu-west-3.compute.internal
-#rke2-worker-2 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-1-4-161.eu-west-3.compute.internal
+worker-0 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-4-133.eu-west-3.compute.internal
+#worker-1 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-0-4-24.eu-west-3.compute.internal
 
 [external-nodes]
-#rke2-worker-2 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/labuser/tactile5g.pem ansible_host=ip-172-1-4-161.eu-west-3.compute.internal
 
 [local]
 localhost  ansible_connection=local

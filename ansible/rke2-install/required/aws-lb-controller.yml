@@ -8,7 +8,7 @@
       
     - name: Apply the configuration using kubectl
       command: |
-        kubectl apply -f {{ main_path }}/tactile5g-local-auto-ztp/ansible/rke2-install/required/crds.yaml --kubeconfig {{ main_path }}/to-delete/rke2.yaml
+        kubectl apply -f {{ main_path }}/auto-ztp/ansible/rke2-install/required/crds.yaml --kubeconfig {{ main_path }}/to-delete/rke2.yaml
 
     - name: Update helm repo
       command: helm repo update

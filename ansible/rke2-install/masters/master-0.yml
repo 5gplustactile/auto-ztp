@@ -1,6 +1,10 @@
 ---
 # tasks file for ansible-rk2
 
+- name: Set system's hostname
+  ansible.builtin.hostname:
+    name: "{{ ansible_host }}"
+
 - name: stop firewall
   ansible.builtin.systemd:
     state: stopped
@@ -35,12 +39,11 @@
     block: |
       disable:
         - rke2-ingress-nginx
-      cloud-provider-name: aws
-      node-taint:
-        - CriticalAddonsOnly=true:NoExecute
-      server: https://{{ nlb }}:9345
-      token: my-shared-secret
+      cloud-provider-name: external
+      #node-taint:
+      #  - CriticalAddonsOnly=true:NoExecute
       tls-san:
+        - {{ ansible_host }}
         - {{ nlb }}
 
 - name: download RKE2 install script
@@ -51,7 +54,7 @@
     
 - name: install rke2 master
   ansible.builtin.shell: |
-     bash /usr/local/bin/install-rke2.sh
+     INSTALL_RKE2_CHANNEL=v1.27 /usr/local/bin/install-rke2.sh
 
 - name: enable and start rke2
   ansible.builtin.systemd:
@@ -73,3 +76,64 @@
     src: "{{ kubectl_path.files[0].path }}"
     state: link
     force: yes
+
+- name: Download Helm
+  get_url:
+    url: https://get.helm.sh/helm-v3.13.1-linux-amd64.tar.gz
+    dest: /tmp/helm-v3.13.1-linux-amd64.tar.gz
+
+- name: Extract Helm archive
+  unarchive:
+    src: /tmp/helm-v3.13.1-linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Move Helm binary to /usr/local/bin
+  command: mv /tmp/linux-amd64/helm /usr/local/bin/helm
+
+- name: Check Helm version
+  command: helm version --short
+  register: helm_version
+  changed_when: false
+  
+- debug:
+    var: helm_version.stdout_lines
+
+- name: Check if control-plane role label is set
+  shell: |
+    kubectl get daemonset aws-cloud-controller-manager -n kube-system -o jsonpath='{.spec.template.metadata.labels.role\.kubernetes\.io/control-plane}' --kubeconfig /etc/rancher/rke2/rke2.yaml
+  register: existing_control_plane_role
+  changed_when: false
+
+- name: Remove control-plane role from DaemonSet
+  shell: |
+    kubectl patch daemonset aws-cloud-controller-manager -n kube-system --type json -p='[{"op": "remove", "path": "/spec/template/metadata/labels/role.kubernetes.io~1control-plane"}]' --kubeconfig /etc/rancher/rke2/rke2.yaml
+  when: existing_control_plane_role.stdout != ""
+
+- name: Get the instance ID from the metadata service
+  command: curl -s http://169.254.169.254/latest/meta-data/instance-id
+  register: instance_id
+  changed_when: false
+
+- name: Get the availability zone from the metadata service
+  command: curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone
+  register: availability_zone
+  changed_when: false
+
+- name: Get the node name
+  command: hostname
+  register: node_name
+  changed_when: false
+
+- name: Construct the provider ID
+  set_fact:
+    provider_id: "aws:///{{ availability_zone.stdout }}/{{ instance_id.stdout }}"
+
+- name: Check if providerID is already set
+  shell: kubectl get node "{{ node_name.stdout }}" -o jsonpath='{.spec.providerID}' --kubeconfig /etc/rancher/rke2/rke2.yaml
+  register: existing_provider_id
+  changed_when: false
+
+- name: Update the node
+  shell: kubectl patch node "{{ node_name.stdout }}" -p "{\"spec\":{\"providerID\":\"{{ provider_id }}\"}}" --kubeconfig /etc/rancher/rke2/rke2.yaml
+  when: existing_provider_id.stdout == ""

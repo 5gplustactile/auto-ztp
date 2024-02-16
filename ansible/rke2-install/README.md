@@ -1,5 +1,15 @@
 # Deploy RKE2 using ansible
 
+```
+This deployment install the Kubernetes 1.27 version to be compatible
+with the AWS.
+
+NOTA: In Kubernetes 1.27 and later, you must use an out-of-tree AWS
+
+https://rke.docs.rancher.com/config-options/cloud-providers/aws#migrating-to-the-out-of-tree-aws-cloud-provider-for-rke
+```
+
+
 ## Dependencies
 - ansible
 - Helm

@@ -1,0 +1,35 @@
+---
+
+- name: Get the instance ID from the metadata service
+  command: curl -s http://169.254.169.254/latest/meta-data/instance-id
+  register: instance_id
+  changed_when: false
+  
+
+- name: Get the availability zone from the metadata service
+  command: curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone
+  register: availability_zone
+  changed_when: false
+  
+
+- name: Get the node name
+  command: hostname
+  register: node_name
+  changed_when: false
+  
+
+- name: Construct the provider ID
+  set_fact:
+    provider_id: "aws:///{{ availability_zone.stdout }}/{{ instance_id.stdout }}"
+  
+
+- name: Check if providerID is already set
+  shell: kubectl get node "{{ node_name.stdout }}" -o jsonpath='{.spec.providerID}' --kubeconfig /etc/rancher/rke2/rke2.yaml
+  register: existing_provider_id
+  changed_when: false
+  
+  
+- name: Update the node
+  shell: kubectl patch node "{{ node_name.stdout }}" -p "{\"spec\":{\"providerID\":\"{{ provider_id }}\"}}" --kubeconfig /etc/rancher/rke2/rke2.yaml
+  when: existing_provider_id.stdout == ""
+  

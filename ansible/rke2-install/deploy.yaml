@@ -51,14 +51,12 @@
         path: "{{ main_path }}/to-delete"
         state: directory
       become: yes
-      tags: test
 
     - name: kubeconfig
       ansible.builtin.fetch:
         src: /etc/rancher/rke2/rke2.yaml
         dest: "{{ main_path }}/to-delete/rke2.yaml"
         flat: yes
-      tags: test
     
     - name: replace 127.0.0.1 with "{{ nlb }}" in "{{ main_path }}/to-delete/rke2.yaml"
       replace:
@@ -66,7 +64,20 @@
         regexp: '127\.0\.0\.1'
         replace: '{{ nlb }}'
       delegate_to: localhost
-      tags: test
+
+- name: pip3 operations with Ansible
+  hosts: workers
+  become: yes
+  vars_files:
+       - common_vars.yml
+  tasks:
+    - name: copy kubeconfig to workers"
+      ansible.builtin.copy:
+        src: "{{ main_path }}/to-delete/rke2.yaml"
+        dest: /etc/rancher/rke2/rke2.yaml
+
+    - name: provider id aws
+      ansible.builtin.import_tasks: ./workers/provider-id.yaml
 
 - name: Install required folder tools
   hosts: localhost

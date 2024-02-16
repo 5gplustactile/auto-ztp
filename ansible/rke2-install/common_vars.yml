@@ -16,7 +16,7 @@ workers:
 
 
 metalLb:
-  enable: true
+  enable: false
   name: ip-pooladdress-local
   poolAddress: 192.168.1.30-192.168.1.50
 
