@@ -15,10 +15,17 @@ resource "aws_s3_bucket_versioning" "versioning" {
   }
 }
 
-resource "aws_s3_object" "object" {
+resource "aws_s3_object" "aws_policy" {
   bucket = aws_s3_bucket.bucket.id 
   key    = "amazon-cloudwatch-agent.json"  # replace with your file name
   source = "./config/amazon-cloudwatch-agent.json"  # replace with the path to your local file
+  acl    = "private"
+}
+
+resource "aws_s3_object" "values" {
+  bucket = aws_s3_bucket.bucket.id 
+  key    = "values.yaml"  # replace with your file name
+  source = "./config/values.yaml"  # replace with the path to your local file
   acl    = "private"
 }
 
