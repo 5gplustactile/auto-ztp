@@ -10,7 +10,7 @@ metadata:
 spec:
   project: {{ $.Values.project }}
   source:
-    repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+    repoURL: 'https://github.com/andresanaya21/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/extras/awsLb'
     targetRevision: main
   destination:

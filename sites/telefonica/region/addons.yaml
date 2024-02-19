@@ -10,7 +10,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   sources:
     - path: sites/telefonica/region/addons/helm-cluster-addons
-      repoURL: 'https://github.com/andresanaya21/tactile5g-local-auto-ztp.git'
+      repoURL: 'https://github.com/andresanaya21/5gplustactile/auto-ztp.git'
       targetRevision: main
       helm:
         valueFiles:
