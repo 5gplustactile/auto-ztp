@@ -3,7 +3,7 @@ data "aws_vpc" "vpc_dc" {
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge" {
-  for_each = { for k, v in var.instances : k => v if v.instance_in_edge }
+  count = local.instance_in_edge ? 1 : 0
 
   vpc_id     = var.vpc_id
   cidr_block = var.cidr_block_snet_op_region
