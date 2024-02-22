@@ -51,7 +51,7 @@ variable "tags" {
 
 variable "cidr_block_snet_op_region" {
   type = string
-  description = "value of the cidr to the subnet created in the outpost. This subnet will be used to connect the instances to region. Please keep in mind the var.vpc_cidr variable"
+  description = "If instance_in_edge true. Cidr subnet to the subnet created in outpost"
   default  = "127.0.0.1/24"
   
 }
