@@ -3,11 +3,13 @@ variable "instances" {
   type = map(object({
     private_ip = string
     instance_in_edge = bool
+    ami = string
   }))
   default = {
     "instance-example" = {
       private_ip = "172.0.5.10"
       instance_in_edge = true
+      ami = "ami-05b5a865c3579bbc4"
     }
   }
 }

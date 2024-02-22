@@ -10,7 +10,7 @@ module "ec2_instance" {
 
   for_each = var.instances
 
-  ami = local.ami
+  ami = each.value.ami
   name = each.key
 #  instance_type = "${var.instance_edge ? local.instance_type_outpost : local.instance_type_region}"
   instance_type = each.value.instance_in_edge ? local.instance_type_outpost : var.instance_type_region
