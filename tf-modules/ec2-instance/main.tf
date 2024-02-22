@@ -31,7 +31,7 @@ module "ec2_instance" {
   monitoring = var.monitoring
   vpc_security_group_ids = [aws_security_group.sgs_instance.id]
 #  subnet_id = "${var.instance_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[0]}"
-  subnet_id = each.value.instance_in_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: aws_subnet.private_region_subnet
+  subnet_id = each.value.instance_in_edge ? aws_subnet.tf_outpost_subnet_edge[each.key].id : aws_subnet.private_region_subnet[each.key].id
   associate_public_ip_address = false
   iam_role_description = "IAM Role to EC2 intances"
   create_iam_instance_profile = true
