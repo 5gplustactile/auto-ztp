@@ -1,18 +1,3 @@
-data "aws_iam_policy_document" "s3" {
-  statement {
-    actions   = ["s3:GetObject"]
-    resources = ["${var.arn_s3_bucket}/*"]
-  }
-}
-
-resource "aws_iam_policy" "s3" {
-  for_each = var.instances
-
-  name        = "${each.key}-S3AccessPolicy"
-  description = "An IAM policy to allow an EC2 instance to access an S3 bucket"
-  policy      = data.aws_iam_policy_document.s3.json
-}
-
 module "ec2_instance" { 
   source = "terraform-aws-modules/ec2-instance/aws"
   version = "5.5.0"
@@ -99,7 +84,6 @@ module "ec2_instance" {
   iam_role_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     CloudWatchAgentServerRole = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-    "${each.key}-S3AccessPolicy" = aws_iam_policy.s3.arn
   }
 
 #  instance_tags = {

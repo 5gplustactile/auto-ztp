@@ -56,13 +56,6 @@ variable "cidr_block_snet_op_region" {
   
 }
 
-variable "arn_s3_bucket" {
-  type = string
-  description = "name of s3 bucket where is stored the automation files"
-  default = ""
-  
-}
-
 variable "cidr_private_subnet" {
   type = string
   description = "If instance_in_edge false. It is the cidr of the vpc to attach the isntance in specific private network"
