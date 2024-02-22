@@ -1,5 +1,6 @@
 resource "aws_subnet" "tf_outpost_subnet_edge" {
-  count = local.instance_in_edge ? 1 : 0
+  for_each = { for k, v in var.instances : k => v if v.instance_in_edge }
+
   vpc_id     = var.vpc_id
   cidr_block = var.cidr_block_snet_op_region
   outpost_arn = local.outpost_arn
@@ -9,8 +10,8 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
 }
 
 resource "aws_subnet" "private_region_subnet" {
-  count = local.instance_in_edge ? 0 : 1
-  vpc_id     = var.vpc_id
+  for_each = { for k, v in var.instances : k => v if !v.instance_in_edge }
 
+  vpc_id     = var.vpc_id
   tags = var.tags
 }
