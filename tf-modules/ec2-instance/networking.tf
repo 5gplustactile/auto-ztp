@@ -17,5 +17,6 @@ resource "aws_subnet" "private_region_subnet" {
   for_each = { for k, v in var.instances : k => v if !v.instance_in_edge }
 
   vpc_id     = var.vpc_id
+  cidr_block = var.cidr_private_subnet
   tags = var.tags
 }
