@@ -1,3 +1,7 @@
+data "aws_vpc" "vpc_dc" {
+  id = var.vpc_id
+}
+
 resource "aws_subnet" "tf_outpost_subnet_edge" {
   for_each = { for k, v in var.instances : k => v if v.instance_in_edge }
 

@@ -27,7 +27,7 @@ variable "monitoring" {
 
 variable "instance_type_region" {
     type = string
-    description = "type instace"
+    description = "instance type if instance_in_edge is false"
     default = "t3.medium"
 }
 
@@ -35,20 +35,6 @@ variable "vpc_id" {
     type = string
     description = "vpc id"
     default = ""
-  
-}
-
-variable "vpc_name_dc" {
-    type = string
-    description = "name of vpc to the central data center"
-    default = "new-tf-vpc-outpost"
-  
-}
-
-variable "vpc_cidr" {
-    type = string
-    description = "cird to vpc"
-    default = "172.0.0.0/16"
   
 }
 
