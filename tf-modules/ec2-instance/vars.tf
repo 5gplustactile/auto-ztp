@@ -71,3 +71,10 @@ variable "cidr_block_snet_op_region" {
   default  = "127.0.0.1/24"
   
 }
+
+variable "arn_s3_bucket" {
+  type = string
+  description = "name of s3 bucket where is stored the automation files"
+  default = ""
+  
+}
