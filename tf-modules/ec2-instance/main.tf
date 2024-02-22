@@ -99,7 +99,7 @@ module "ec2_instance" {
   iam_role_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     CloudWatchAgentServerRole = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-    "S3AccessPolicy" = aws_iam_policy.s3.arn
+    "${aws_iam_policy}-S3AccessPolicy" = aws_iam_policy.s3.arn
   }
 
 #  instance_tags = {
