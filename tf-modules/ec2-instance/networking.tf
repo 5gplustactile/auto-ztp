@@ -16,7 +16,7 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
 resource "aws_network_interface" "eni_lni" {
   count = length(local.edge_instances)
 
-  subnet_id = aws_subnet.tf_outpost_subnet_edge.id
+  subnet_id = aws_subnet.tf_outpost_subnet_edge[0].id
   tags = var.tags
 }
 
