@@ -6,7 +6,9 @@ data "aws_iam_policy_document" "s3" {
 }
 
 resource "aws_iam_policy" "s3" {
-  name        = "S3AccessPolicy"
+  for_each = var.instances
+
+  name        = "${each.key}-S3AccessPolicy"
   description = "An IAM policy to allow an EC2 instance to access an S3 bucket"
   policy      = data.aws_iam_policy_document.s3.json
 }
