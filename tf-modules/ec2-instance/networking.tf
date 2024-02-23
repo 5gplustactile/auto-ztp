@@ -1,6 +1,6 @@
-#data "aws_vpc" "vpc_dc" {
-#  id = var.vpc_id
-#}
+data "aws_vpc" "vpc_dc" {
+  id = var.vpc_id
+}
 
 resource "aws_subnet" "tf_outpost_subnet_edge" {
   count = local.instance_in_edge ? 1 : 0
