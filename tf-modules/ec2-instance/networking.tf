@@ -30,10 +30,25 @@ resource "aws_route_table_association" "rta" {
   route_table_id = aws_route_table.rtb.id
 }
 
+resource "aws_subnet" "tf_outpost_subnet_edge_local" {
+  count = local.instance_in_edge ? 1 : 0
+
+  vpc_id     = var.vpc_id
+  cidr_block = var.cidr_block_snet_op_local
+  outpost_arn = local.outpost_arn
+  availability_zone = "eu-west-3a"
+  enable_lni_at_device_index = 1
+
+  tags = {
+    Name: "subnet-lni-in-outpost-${local.region}"
+    availability_zone: "outpost"
+  }
+}
+
 resource "aws_network_interface" "eni_lni" {
   count = length(local.edge_instances)
 
-  subnet_id = aws_subnet.tf_outpost_subnet_edge[0].id
+  subnet_id = aws_subnet.tf_outpost_subnet_edge_local[0].id
   security_groups = [ module.security_group.security_group_id ]
   tags = var.tags
 }

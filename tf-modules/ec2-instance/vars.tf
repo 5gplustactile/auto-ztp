@@ -56,6 +56,13 @@ variable "cidr_block_snet_op_region" {
   
 }
 
+variable "cidr_block_snet_op_local" {
+  type = string
+  description = "If instance_in_edge true. Cidr subnet to the subnet created in outpost used for the local network interface (lni)"
+  default  = "127.0.0.2/24"
+  
+}
+
 variable "cidr_private_subnet" {
   type = string
   description = "If instance_in_edge false. It is the cidr of the vpc to attach the isntance in specific private network"
