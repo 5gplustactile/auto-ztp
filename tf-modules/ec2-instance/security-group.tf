@@ -8,7 +8,7 @@ resource "aws_security_group" "sgs_instance" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = [data.aws_vpc.vpc_dc.cidr_block]
+    cidr_blocks      = [var.cidr_block_snet_op_region]
   }
   
   egress {
