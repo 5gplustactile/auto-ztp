@@ -64,7 +64,8 @@ resource "aws_network_interface_attachment" "attach_eni_lni" {
 }
 
 resource "aws_subnet" "private_region_subnet" {
-  for_each = { for k, v in var.instances : k => v if !v.instance_in_edge }
+#  for_each = { for k, v in var.instances : k => v if !v.instance_in_edge }
+  count = local.instance_in_edge ? 0 : 1
 
   vpc_id     = var.vpc_id
   cidr_block = var.cidr_private_subnet
