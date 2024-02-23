@@ -30,7 +30,7 @@ resource "aws_route_table_association" "rta" {
   count = local.instance_in_edge ? 1 : 0
 
   subnet_id      = aws_subnet.tf_outpost_subnet_edge[0].id
-  route_table_id = aws_route_table.rtb.id
+  route_table_id = aws_route_table.rtb[0].id
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge_local" {
@@ -93,5 +93,5 @@ resource "aws_route_table_association" "rta_region" {
   count = local.instance_in_edge ? 0 : 1
   
   subnet_id      = aws_subnet.private_region_subnet[0].id
-  route_table_id = aws_route_table.rtb_region.id
+  route_table_id = aws_route_table.rtb_region[0].id
 }
