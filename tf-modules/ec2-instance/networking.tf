@@ -6,7 +6,28 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
   outpost_arn = local.outpost_arn
   availability_zone = "eu-west-3a"
 
-  tags = var.tags
+  tags = {
+    Name: "subnet-in-outpost-${local.region}"
+    availability_zone: "outpost"
+  }
+}
+
+# Create a route table
+resource "aws_route_table" "rtb" {
+  vpc_id = var.vpc_id
+
+  # Create a route to the Internet gateway
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id  = var.nat_gw_id
+  }
+}
+
+# Associate the route table with the subnet
+resource "aws_route_table_association" "rta" {
+  count = local.instance_in_edge ? 1 : 0
+  subnet_id      = aws_subnet.tf_outpost_subnet_edge[0].id
+  route_table_id = aws_route_table.rtb.id
 }
 
 resource "aws_network_interface" "eni_lni" {

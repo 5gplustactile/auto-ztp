@@ -61,3 +61,10 @@ variable "cidr_private_subnet" {
   description = "If instance_in_edge false. It is the cidr of the vpc to attach the isntance in specific private network"
   
 }
+
+variable "nat_gw_id" {
+  type = string
+  description = "nat gateway id of the vpc dc"
+  default = ""
+  
+}
