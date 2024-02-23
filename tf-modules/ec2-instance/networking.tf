@@ -14,6 +14,8 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
 
 # Create a route table
 resource "aws_route_table" "rtb" {
+  count = local.instance_in_edge ? 1 : 0
+
   vpc_id = var.vpc_id
 
   # Create a route to the Internet gateway
@@ -26,6 +28,7 @@ resource "aws_route_table" "rtb" {
 # Associate the route table with the subnet
 resource "aws_route_table_association" "rta" {
   count = local.instance_in_edge ? 1 : 0
+  
   subnet_id      = aws_subnet.tf_outpost_subnet_edge[0].id
   route_table_id = aws_route_table.rtb.id
 }
