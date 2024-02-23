@@ -107,10 +107,6 @@ module "ec2_instance" {
     CloudWatchAgentServerRole = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   }
 
-#  instance_tags = {
-#    "kubernetes.io/cluster/cluster-mgmt": "shared"
-#  }
-#  tags = {
-#    "kubernetes.io/cluster/cluster-mgmt": "shared"
-#  }
+  instance_tags = var.tags
+  tags = var.tags
 }
