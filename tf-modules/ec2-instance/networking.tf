@@ -72,7 +72,10 @@ resource "aws_subnet" "private_region_subnet" {
 
   vpc_id     = var.vpc_id
   cidr_block = var.cidr_private_subnet
-  tags = var.tags
+  tags = {
+    Name: "private-subnet-region-${local.region}"
+    availability_zone: "region"
+  }
 }
 
 # Create a route table
