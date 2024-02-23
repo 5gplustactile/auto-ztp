@@ -44,6 +44,8 @@ resource "aws_network_interface_attachment" "attach_eni_lni" {
   instance_id   = values(local.instance_in_edge_ids)[count.index]
   network_interface_id = aws_network_interface.eni_lni[count.index].id
   device_index  = 1
+
+  depends_on = [ module.ec2_instance ]
 }
 
 resource "aws_subnet" "private_region_subnet" {
