@@ -13,6 +13,7 @@ resource "aws_network_interface" "eni_lni" {
   count = length(local.edge_instances)
 
   subnet_id = aws_subnet.tf_outpost_subnet_edge[0].id
+  security_groups = [ module.security_group.security_group_id ]
   tags = var.tags
 }
 
