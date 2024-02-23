@@ -28,7 +28,7 @@ resource "aws_route_table" "rtb" {
 # Associate the route table with the subnet
 resource "aws_route_table_association" "rta" {
   count = local.instance_in_edge ? 1 : 0
-  
+
   subnet_id      = aws_subnet.tf_outpost_subnet_edge[0].id
   route_table_id = aws_route_table.rtb.id
 }
@@ -73,4 +73,25 @@ resource "aws_subnet" "private_region_subnet" {
   vpc_id     = var.vpc_id
   cidr_block = var.cidr_private_subnet
   tags = var.tags
+}
+
+# Create a route table
+resource "aws_route_table" "rtb_region" {
+  count = local.instance_in_edge ? 0 : 1
+
+  vpc_id = var.vpc_id
+
+  # Create a route to the Internet gateway
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id  = var.nat_gw_id
+  }
+}
+
+# Associate the route table with the subnet
+resource "aws_route_table_association" "rta_region" {
+  count = local.instance_in_edge ? 0 : 1
+  
+  subnet_id      = aws_subnet.private_region_subnet[0].id
+  route_table_id = aws_route_table.rtb_region.id
 }
