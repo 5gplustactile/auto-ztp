@@ -8,11 +8,7 @@ resource "aws_subnet" "subnet" {
   cidr_block        = each.value.cidr_block
   availability_zone = each.value.az
 
-  tags = {
-    "kubernetes.io/role/internal-elb" = "1"
-     Name = "${each.value.dt}-private-${each.value.az}"
-     availability_zone = "region"
-  }
+  tags = var.tags
 }
 
 ## subnets to outpost
