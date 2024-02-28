@@ -1,0 +1,27 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kube-clarity-http
+  namespace: kubeclarity-system
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: kube-clarity-http
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: instance
+spec:
+  ingressClassName: alb
+  defaultBackend:
+    service:
+      name: kubeclarity-kubeclarity  
+      port: 
+        number: 8080
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: / 
+        backend:
+          service:
+            name: kubeclarity-kubeclarity 
+            port:
+              number: 8080 
