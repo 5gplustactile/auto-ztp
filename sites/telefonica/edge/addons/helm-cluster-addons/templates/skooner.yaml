@@ -1,25 +1,25 @@
-{{- $prometheus := .Values.prometheus | default dict }}
-{{- if $prometheus.enable | default false }}
-{{- range $prometheus.servers }}
+{{- $skooner := .Values.skooner | default dict }}
+{{- if $skooner.enable | default false }}
+{{- range $skooner.servers }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ printf "prometheus-%s" .name | trunc 50 }}
+  name: {{ printf "skooner-%s" .name | trunc 50 }}
   namespace: argocd
 spec:
   project: {{ $.Values.project }}
   source:
     repoURL: 'https://github.com/andresanaya21/5gplustactile/auto-ztp.git'
-    path: 'templates/cluster-addons/monitoring/prometheus'
-    targetRevision: {{ $prometheus.version }}
+    path: 'templates/cluster-addons/monitoring/skooner'
+    targetRevision: {{ $skooner.version }}
     helm:
       valueFiles:
         - values.yaml
       values: |
         {{ toYaml .values | nindent 8 }}
   destination:
-    namespace: prometheus-system
+    namespace: skooner-system
     server: {{ .url }}
   syncPolicy:
     automated:

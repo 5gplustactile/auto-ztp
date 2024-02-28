@@ -17,16 +17,7 @@ spec:
       valueFiles:
         - values.yaml
       values: |
-        ingress:
-          enabled: true
-          environment: region
-          className: alb
-          annotations:
-            alb.ingress.kubernetes.io/load-balancer-name: grafana-system
-            alb.ingress.kubernetes.io/target-type: instance
-            alb.ingress.kubernetes.io/scheme: internal
-            alb.ingress.kubernetes.io/tags: tactile5g/digital-twins=grafana-system
-
+        {{ toYaml .values | nindent 8 }}
   destination:
     namespace: grafana-system
     server: {{ .url }}

@@ -1,31 +1,32 @@
-{{- $longhorn := .Values.longhorn | default dict }}
-{{- if $longhorn.enable | default false }}
-{{- range $longhorn.servers }}
+{{- $metricServer := .Values.metricServer | default dict }}
+{{- if $metricServer.enable | default false }}
+{{- range $metricServer.servers }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ printf "longhorn-%s" .name | trunc 50 }}
+  name: {{ printf "metric-server-%s" .name | trunc 30 }}
   namespace: argocd
 spec:
   destination:
     name: ''
-    namespace: longhorn-system
+    namespace: kube-system
     server: {{ .url }}
   source:
     path: ''
-    repoURL: 'https://charts.longhorn.io'
-    targetRevision: {{ $longhorn.version }}
-    chart: 'longhorn'
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    targetRevision: {{ $metricServer.version }}
+    chart: metrics-server
     helm:
       valueFiles:
         - values.yaml
       values: |
-        {{ toYaml .values | nindent 8 }}
-        preUpgradeChecker:
-          jobEnabled: false
-          upgradeVersionCheck: false
-  sources: []
+        apiService:
+          create: true
+        extraArgs:
+          - --kubelet-insecure-tls=true
+          - --kubelet-preferred-address-types=InternalIP
+
   project: {{ $.Values.project }}
   syncPolicy:
     automated:
