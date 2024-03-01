@@ -31,3 +31,15 @@ skooner:
   enable: true
   servers: []
   version: main
+kubeClarity:
+  enable: true
+  servers: []
+  version: v2.23.1
+externalSecret:
+  enable: true
+  servers: []
+  version: 0.9.13
+metricServer:
+  enable: true
+  servers: []
+  version: 6.9.3

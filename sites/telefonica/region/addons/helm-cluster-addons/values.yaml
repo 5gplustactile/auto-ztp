@@ -27,7 +27,7 @@ ingress:
   servers: []
   version: 4.9.0
 kubeClarity:
-  enable: false
+  enable: true
   servers:
   - name: telefonica-region-example-region-0
     url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
@@ -45,7 +45,7 @@ kubeClarity:
           type: LoadBalancer
   version: v2.23.1
 longhorn:
-  enable: false
+  enable: true
   servers:
   - name: telefonica-region-example-region-0
     url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
@@ -78,7 +78,7 @@ prometheus:
         environment: region
   version: main
 skooner:
-  enable: false
+  enable: true
   servers:
   - name: telefonica-region-example-region-0
     url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
@@ -88,3 +88,11 @@ skooner:
         enabled: false
         environment: region
   version: main
+externalSecret:
+  enable: true
+  servers:
+  - name: telefonica-region-example-region-0
+    url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-262710596.eu-west-3.elb.amazonaws.com:6443
+    values:
+      installCRDs: true
+  version: 0.9.13
