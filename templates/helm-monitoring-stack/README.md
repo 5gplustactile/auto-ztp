@@ -7,7 +7,8 @@ A Helm chart for Kubernetes monitoring stack
 ## Requirements
 
 ```
-$ helm dependency build
+$ cd auto-ztp/templates
+$ helm dependency build helm-monitoring-stack
 ```
 
 
