@@ -6,7 +6,7 @@ grafana:
   ingress:
     enable: true
     hosts:
-      - host: grafana-dt.tactile5g.int
+      - host: grafana-dt.test.int
         paths:
           - path: /
             pathType: Prefix
@@ -16,7 +16,7 @@ prometheus:
   ingress:
     enabled: true
     hosts:
-      - host: prometheus-dt.tactile5g.int
+      - host: prometheus-dt.test.int
         paths:
           - path: /
             pathType: Prefix
@@ -29,7 +29,7 @@ skooner:
     enabled: true
     className: nginx
     hosts:
-      - host: skooner.tactile5g.com
+      - host: skooner.test.com
         paths:
           - path: /
             pathType: Prefix

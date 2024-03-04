@@ -44,7 +44,7 @@ ingress:
   enabled: true
   className: "nginx"
   # edge, region, wavelength
-  environment: "region"
+  environment: "edge"
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
