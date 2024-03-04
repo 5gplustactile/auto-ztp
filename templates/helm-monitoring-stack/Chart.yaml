@@ -1,0 +1,14 @@
+apiVersion: v2
+name: Helm monitoring stack
+description: A Helm chart for Kubernetes monitoring stack
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: grafana
+  - name: prometheus
+  - name: skooner
+  - name: metrics-server
+    repository: 'https://charts.bitnami.com/bitnami'
+    version: 6.9.3

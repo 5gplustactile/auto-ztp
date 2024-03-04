@@ -1,0 +1,34 @@
+
+grafana:
+  ingress:
+    enable: true
+  hosts:
+    - host: grafana-dt.tactile5g.int
+      paths:
+        - path: /
+          pathType: Prefix
+
+prometheus:
+  ingress:
+    enabled: true
+  hosts:
+    - host: prometheus-dt.tactile5g.int
+      paths:
+        - path: /
+          pathType: Prefix
+
+skooner:
+  ingress:
+    enabled: true
+  hosts:
+    - host: skooner.tactile5g.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+metrics-server:
+  apiService:
+    create: true
+  extraArgs:
+    - --kubelet-insecure-tls=true
+    - --kubelet-preferred-address-types=InternalIP
