@@ -6,6 +6,11 @@ A Helm chart for Kubernetes monitoring stack
 
 ## Requirements
 
+```
+$ helm dependency build
+```
+
+
 | Repository | Name | Version |
 |------------|------|---------|
 |  | grafana |  |
