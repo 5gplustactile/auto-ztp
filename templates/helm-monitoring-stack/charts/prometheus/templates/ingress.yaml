@@ -50,11 +50,11 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: prometheus
+                name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
               {{- else }}
-              serviceName: prometheus
+              serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
               {{- end }}
           {{- end }}
@@ -81,7 +81,7 @@ spec:
   ingressClassName: alb
   defaultBackend:
     service:
-      name: prometheus
+      name: {{ $fullName }}
       port:
         number: {{ $svcPort }}
   rules:
@@ -91,7 +91,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: prometheus
+                name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
 

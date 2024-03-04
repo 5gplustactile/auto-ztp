@@ -2,7 +2,7 @@
 grafana:
   enabled: true
   env:
-    prometheusUrl: http://prometheus.monitoring.svc.cluster.local:9090
+    prometheusUrl: http://monitoring-prometheus.monitoring.svc.cluster.local:9090
   ingress:
     enable: true
     hosts:
@@ -10,6 +10,8 @@ grafana:
         paths:
           - path: /
             pathType: Prefix
+  service:
+    type: ClusterIP
 
 prometheus:
   enabled: true
@@ -22,6 +24,8 @@ prometheus:
             pathType: Prefix
   serviceAccount:
     create: false
+  service:
+    type: ClusterIP
 
 skooner:
   enabled: true
@@ -29,10 +33,12 @@ skooner:
     enabled: true
     className: nginx
     hosts:
-      - host: skooner.test.com
+      - host: skooner-dt.test.int
         paths:
           - path: /
             pathType: Prefix
+  service:
+    type: ClusterIP
 
 metrics-server:
   enabled: false
