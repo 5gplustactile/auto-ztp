@@ -7,8 +7,11 @@ appVersion: "1.0.0"
 
 dependencies:
   - name: grafana
+    version: "*"
   - name: prometheus
+    version: "*"
   - name: skooner
+    version: "*"
   - name: metrics-server
     repository: 'https://charts.bitnami.com/bitnami'
     version: 6.9.3
