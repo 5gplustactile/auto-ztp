@@ -1,6 +1,6 @@
 
 grafana:
-  enabled: false
+  enabled: true
   env:
     prometheusUrl: http://monitoring.prometheus-system.svc.cluster.local:9090
   ingress:
