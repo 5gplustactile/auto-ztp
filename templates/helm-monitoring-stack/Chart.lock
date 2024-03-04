@@ -1,0 +1,15 @@
+dependencies:
+- name: grafana
+  repository: ""
+  version: '*'
+- name: prometheus
+  repository: ""
+  version: '*'
+- name: skooner
+  repository: ""
+  version: '*'
+- name: metrics-server
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.9.3
+digest: sha256:5cbf80153540196daa78cf02382d8f2411dc6f7c1a67a21f622f34e7bb93dfda
+generated: "2024-03-04T12:41:29.017632808Z"

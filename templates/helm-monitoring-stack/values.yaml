@@ -1,5 +1,6 @@
 
 grafana:
+  enabled: false
   env:
     prometheusUrl: http://monitoring.prometheus-system.svc.cluster.local:9090
   ingress:
@@ -11,6 +12,7 @@ grafana:
           pathType: Prefix
 
 prometheus:
+  enabled: true
   ingress:
     enabled: true
   hosts:
@@ -20,6 +22,7 @@ prometheus:
           pathType: Prefix
 
 skooner:
+  enabled: true
   ingress:
     enabled: true
   hosts:
@@ -29,6 +32,7 @@ skooner:
           pathType: Prefix
 
 metrics-server:
+  enabled: false
   apiService:
     create: true
   extraArgs:
