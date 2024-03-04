@@ -2,34 +2,37 @@
 grafana:
   enabled: true
   env:
-    prometheusUrl: http://monitoring.prometheus-system.svc.cluster.local:9090
+    prometheusUrl: http://prometheus.monitoring.svc.cluster.local:9090
   ingress:
     enable: true
-  hosts:
-    - host: grafana-dt.tactile5g.int
-      paths:
-        - path: /
-          pathType: Prefix
+    hosts:
+      - host: grafana-dt.tactile5g.int
+        paths:
+          - path: /
+            pathType: Prefix
 
 prometheus:
   enabled: true
   ingress:
     enabled: true
-  hosts:
-    - host: prometheus-dt.tactile5g.int
-      paths:
-        - path: /
-          pathType: Prefix
+    hosts:
+      - host: prometheus-dt.tactile5g.int
+        paths:
+          - path: /
+            pathType: Prefix
+  serviceAccount:
+    create: false
 
 skooner:
   enabled: true
   ingress:
     enabled: true
-  hosts:
-    - host: skooner.tactile5g.com
-      paths:
-        - path: /
-          pathType: Prefix
+    className: nginx
+    hosts:
+      - host: skooner.tactile5g.com
+        paths:
+          - path: /
+            pathType: Prefix
 
 metrics-server:
   enabled: false

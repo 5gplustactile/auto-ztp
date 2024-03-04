@@ -42,7 +42,7 @@ service:
 
 ingress:
   enabled: true
-  className: "alb"
+  className: "nginx"
   # edge, region, wavelength
   environment: "region"
   annotations: {}
