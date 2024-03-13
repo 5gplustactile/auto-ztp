@@ -21,7 +21,8 @@ def main(new_server_json, operation, file, project):
     new_server = json.loads(new_server_json)
 
     # Check if the new server exists in the servers list for addons
-    for section in ['certManager', 'ingress', 'metalLB', 'longhorn', 'prometheus', 'grafana', 'awslb','skooner']:
+    for section in ['certManager', 'ingress', 'metalLB', 'longhorn', 'prometheus', 
+                    'grafana', 'awslb','skooner', 'kubeClarity','externalSecret','metricServer']:
         if operation == 'add' and new_server not in values[section]['servers']:
             # If operation is add and it doesn't exist, add the new server
             values[section]['servers'].append(new_server)
