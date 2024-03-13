@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: wavelength-clusters-telefonica
+  name: clusters-telefonica-wavelength-clusters
   namespace: argocd
 spec:
   destination:

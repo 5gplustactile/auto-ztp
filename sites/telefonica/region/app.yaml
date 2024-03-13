@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: region-clusters-telefonica
+  name: clusters-telefonica-region-clusters
   namespace: argocd
 spec:
   destination:
