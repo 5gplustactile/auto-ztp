@@ -1,31 +1,31 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: cluster-addons-edge
-  namespace: argocd
-spec:
-  destination:
-    name: ''
-    namespace: telefonica
-    server: 'https://kubernetes.default.svc'
-  sources:
-    - path: sites/telefonica/edge/addons/helm-cluster-addons
-      repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
-      targetRevision: main
-      helm:
-        valueFiles:
-          - values.yaml
-  project: telefonica
-  syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - PrunePropagationPolicy=background
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: cluster-addons-edge
+#  namespace: argocd
+#spec:
+#  destination:
+#    name: ''
+#    namespace: telefonica
+#    server: 'https://kubernetes.default.svc'
+#  sources:
+#    - path: sites/telefonica/edge/addons/helm-cluster-addons
+#      repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+#      targetRevision: main
+#      helm:
+#        valueFiles:
+#          - values.yaml
+#  project: telefonica
+#  syncPolicy:
+#    automated:
+#      prune: true
+#      allowEmpty: true
+#      selfHeal: true
+#    syncOptions:
+#      - CreateNamespace=true
+#      - ApplyOutOfSyncOnly=true
+#      - PruneLast=true
+#      - PrunePropagationPolicy=background
 #    retry:
 #      limit: 5
 #      backoff:
