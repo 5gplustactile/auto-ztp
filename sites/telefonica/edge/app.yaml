@@ -14,10 +14,11 @@ spec:
       targetRevision: main
       helm:
         valueFiles:
-          - $values/telefonica/edge/values.yaml
-    - repoURL: 'https://github.com/5gplustactile/provisioning.git'
-      targetRevision: 'dt/telefonica'
-      ref: values
+          - values.yaml
+#          - $values/telefonica/edge/values.yaml
+#    - repoURL: 'https://github.com/5gplustactile/provisioning.git'
+#      targetRevision: 'dt/telefonica'
+#      ref: values
   project: clusters
   syncPolicy:
     automated: {}

@@ -3,7 +3,7 @@
 # https://blog.scottlowe.org/2019/09/09/consuming-preexisting-aws-infrastructure-with-cluster-api/
 # https://techbloc.net/archives/4661
 {{- range .Values.clusters }}
-
+---
 apiVersion: v1
 kind: Namespace
 metadata:
