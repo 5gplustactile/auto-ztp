@@ -10,12 +10,12 @@ spec:
     server: 'https://kubernetes.default.svc'
   sources:
     - path: templates/helm-region-chart
-      repoURL: 'https://github.com/andresanaya21/5gplustactile/auto-ztp.git'
+      repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
       targetRevision: main
       helm:
         valueFiles:
           - $values/digital-twins-0/region/values.yaml
-    - repoURL: 'https://github.com/andresanaya21/5gplustactile/provisioning.git'
+    - repoURL: 'https://github.com/5gplustactile/provisioning.git'
       targetRevision: 'dt/digital-twins-0'
       ref: values
   project: clusters

@@ -10,12 +10,12 @@ spec:
     server: 'https://kubernetes.default.svc'
   sources:
     - path: sites/telefonica/wavelength/helm-region-chart
-      repoURL: 'https://github.com/andresanaya21/5gplustactile/auto-ztp.git'
+      repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
       targetRevision: main
       helm:
         valueFiles:
           - $values/telefonica/wavelength/values.yaml
-    - repoURL: 'https://github.com/andresanaya21/5gplustactile/provisioning.git'
+    - repoURL: 'https://github.com/5gplustactile/provisioning.git'
       targetRevision: 'dt/telefonica'
       ref: values
   project: clusters
