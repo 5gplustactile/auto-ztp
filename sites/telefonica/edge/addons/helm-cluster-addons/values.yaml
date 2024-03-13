@@ -3,43 +3,43 @@ awslb:
   servers: []
   version: 1.6.2
 certManager:
-  enable: true
+  enable: false
   servers: []
   version: v1.13.3
 grafana:
-  enable: true
+  enable: false
   servers: []
   version: main
 ingress:
-  enable: true
+  enable: false
   servers: []
   version: 4.9.0
 longhorn:
-  enable: true
+  enable: false
   servers: []
   version: 1.6.0
 metalLB:
-  enable: true
+  enable: false
   servers: []
   version: 0.13.12
 project: telefonica
 prometheus:
-  enable: true
+  enable: false
   servers: []
   version: main
 skooner:
-  enable: true
+  enable: false
   servers: []
   version: main
 kubeClarity:
-  enable: true
+  enable: false
   servers: []
   version: v2.23.1
 externalSecret:
-  enable: true
+  enable: false
   servers: []
   version: 0.9.13
 metricServer:
-  enable: true
+  enable: false
   servers: []
   version: 6.9.3
