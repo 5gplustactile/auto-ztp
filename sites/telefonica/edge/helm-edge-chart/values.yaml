@@ -1,0 +1,7 @@
+clusters:
+  - name: no-name
+    masterNodes: 1
+    workerNodes: 1
+    version: v1.25.0
+    subnetOutpost: []
+    subnetRegion: []
