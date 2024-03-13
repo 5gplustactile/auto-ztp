@@ -1,0 +1,181 @@
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: telefonica-edge-example-in-edge
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+# this file install infra in aws (sgs, route-table, ec2, lb)
+# install 1 master (control plane), 1 node (worker) using an existent infra (vcp, igw, natgtw)
+# https://blog.scottlowe.org/2019/09/09/consuming-preexisting-aws-infrastructure-with-cluster-api/
+# https://techbloc.net/archives/4661
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSCluster
+metadata:
+  name: telefonica-edge-example-in-edge
+  namespace: telefonica-edge-example-in-edge
+spec:
+  region: eu-west-3
+  additionalTags:
+    enviroment: edge
+  sshKeyName: tactile5g
+  controlPlaneLoadBalancer:
+    scheme: internal
+    subnets:
+      - subnet-030e4ed855b03c951 # private subnet region
+      - subnet-0ddf5121e407c8afa # private subnet region
+      - subnet-0a6b8b5a794d140e1 # private subnet region
+  bastion:
+    enabled: false
+  network:
+    vpc:
+      id: vpc-08291124993d8220b
+    subnets:
+      - id: subnet-0960415fa058bfcb2  # private subnet outpost
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSMachineTemplate
+metadata:
+  name: telefonica-edge-example-in-edge-control-plane
+  namespace: telefonica-edge-example-in-edge
+spec:
+  template:
+    spec:
+      iamInstanceProfile: control-plane.cluster-api-provider-aws.sigs.k8s.io
+      instanceType: c6id.2xlarge
+      sshKeyName: tactile5g
+      rootVolume:
+        size: 80
+      additionalSecurityGroups:
+        - name: "telefonica-edge-example-in-edge-sgs"
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSMachineTemplate
+metadata:
+  name: telefonica-edge-example-in-edge-worker
+  namespace: telefonica-edge-example-in-edge
+spec:
+  template:
+    spec:
+      iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+      instanceType: c6id.2xlarge
+      sshKeyName: tactile5g
+      rootVolume:
+        size: 80
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: telefonica-edge-example-in-edge
+  namespace: telefonica-edge-example-in-edge
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    kind: KubeadmControlPlane
+    name: telefonica-edge-example-in-edge-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+    kind: AWSCluster
+    name: telefonica-edge-example-in-edge
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfigTemplate
+metadata:
+  name: telefonica-edge-example-in-edge-worker
+  namespace: telefonica-edge-example-in-edge
+spec:
+  template:
+    spec:
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            cloud-provider: aws
+          name: '{{ ds.meta_data.local_hostname }}'
+      preKubeadmCommands:
+        - |
+          sudo echo "
+          network:
+            version: 2
+            renderer: networkd
+            ethernets:
+              ens6:
+                dhcp4: true
+                dhcp4-overrides:
+                  use-routes: false
+                routes:
+                  - to: 10.11.0.0/16
+                    via: 10.11.29.1
+                  - to: 10.182.32.0/24
+                    via: 10.11.29.1
+          " | sudo tee -a /etc/netplan/ens6.yaml
+      postKubeadmCommands:
+        - netplan apply && ip link set ens6 up
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: KubeadmControlPlane 
+metadata:
+  name: telefonica-edge-example-in-edge-control-plane
+  namespace: telefonica-edge-example-in-edge
+spec:
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      apiServer:
+        extraArgs:
+          cloud-provider: aws
+      controllerManager:
+        extraArgs:
+          cloud-provider: aws
+    initConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: aws
+        name: '{{ ds.meta_data.local_hostname }}'
+    joinConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: aws
+        name: '{{ ds.meta_data.local_hostname }}'
+  machineTemplate:
+    infrastructureRef:
+      apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+      kind: AWSMachineTemplate
+      name: telefonica-edge-example-in-edge-control-plane
+  replicas: 1
+  version: v1.25.0
+---
+# Source: telefonica-edge/templates/capi-template-outpost.yaml
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  name: telefonica-edge-example-in-edge-worker
+  namespace: telefonica-edge-example-in-edge
+spec:
+  clusterName: telefonica-edge-example-in-edge
+  replicas: 1
+  selector:
+    matchLabels: null
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+          kind: KubeadmConfigTemplate
+          name: telefonica-edge-example-in-edge-worker
+      clusterName: telefonica-edge-example-in-edge
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: AWSMachineTemplate
+        name: telefonica-edge-example-in-edge-worker
+      version: v1.25.0
