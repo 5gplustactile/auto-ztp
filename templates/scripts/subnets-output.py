@@ -3,6 +3,8 @@ import yaml
 import argparse
 import os
 import glob
+import subprocess
+import shutil
 
 # Set up command line arguments
 parser = argparse.ArgumentParser()
@@ -10,7 +12,17 @@ parser.add_argument('--path-ot-subnet-id', required=True, help='Path to outpost_
 parser.add_argument('--path-private-subnet-id', required=True, help='Path to private_subnet_ids.json')
 parser.add_argument('--path-dir', required=True, help='Path to directory with YAML files')
 parser.add_argument('--path-dest', required=True, help='Path to destination directory')
+parser.add_argument('--git-token', required=True, help='GitHub token')
+parser.add_argument('--git-src', required=True, help='Local path to clone the GitHub repository')
 args = parser.parse_args()
+
+# Create a new directory for the cloned repository
+git_clone_dir = os.path.join(args.git_src, 'cloned_repo')
+
+# Check if the directory exists and is empty
+if os.path.exists(git_clone_dir) and os.listdir(git_clone_dir):
+    print(f"Directory {git_clone_dir} already exists and is not empty. Please provide an empty directory for cloning the repository.")
+    exit(1)
 
 # Read the JSON files
 with open(args.path_ot_subnet_id, 'r') as f:
@@ -32,6 +44,9 @@ yaml_files = glob.glob(os.path.join(args.path_dir, '*.yaml'))
 if not yaml_files:
     print(f"No YAML files found in {args.path_dir}. No changes were made.")
 else:
+    # Clone the GitHub repository
+    subprocess.run(['git', 'clone', f'https://{args.git_token}@github.com/5gplustactile/auto-ztp.git', git_clone_dir])
+
     # Iterate over all YAML files in the specified directory
     for yaml_file_path in yaml_files:
         # Check if the file exists
@@ -57,7 +72,20 @@ else:
                 dest_file_path = os.path.join(args.path_dest, os.path.basename(yaml_file_path))
                 with open(dest_file_path, 'w') as f:
                     yaml.safe_dump(values, f)
+
+                # Add the file to the git staging area
+                subprocess.run(['git', '-C', git_clone_dir, 'add', dest_file_path])
+
             else:
                 print(f"'clusters' is not a list in file {yaml_file_path}. No changes were made.")
         else:
             print(f"File {yaml_file_path} does not exist. No changes were made.")
+
+    # Commit the changes
+    subprocess.run(['git', '-C', git_clone_dir, 'commit', '-m', 'Update YAML files'])
+
+    # Push the changes to the GitHub repository
+    subprocess.run(['git', '-C', git_clone_dir, 'push'])
+
+    # Delete the cloned repository
+    shutil.rmtree(git_clone_dir)
