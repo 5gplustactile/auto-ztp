@@ -8,7 +8,7 @@ do
     in
         d) dir=${OPTARG};;
         z) zone=${OPTARG};;
-        b) dt=${OPTARG};;
+        dt) dt=${OPTARG};;
     esac
 done
 # Print the paths of the files and the cluster name if a YAML file exists
