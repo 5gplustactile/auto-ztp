@@ -23,4 +23,4 @@ do
     ((num_files++))
 done
 
-echo "Found $num_files YAML files in the $dir directory."
+#echo "Found $num_files YAML files in the $dir directory."
