@@ -1,0 +1,9 @@
+clusters:
+- masterNodes: 1
+  name: example-region-0
+  subnetRegion:
+  - subnet-030e4ed855b03c951
+  - subnet-0ddf5121e407c8afa
+  - subnet-0a6b8b5a794d140e1
+  version: v1.25.0
+  workerNodes: 1
