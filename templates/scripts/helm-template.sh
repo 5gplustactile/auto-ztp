@@ -18,7 +18,7 @@ do
     if [ -f "$file" ]; then
         cluster_name=$(yq e '.clusters[0].name' "$file")
         echo "The cluster name in the YAML file is: $cluster_name"
-        helm template -n $cluster_name templates/helm-$zone-chart -f $file > sites/$dt/$zone/$cluster_name.yaml 2> /dev/null
+        helm template -n $cluster_name templates/helm-$zone-chart -f $file | tee sites/$dt/$zone/$cluster_name.yaml
     fi
     ((num_files++))
 done
