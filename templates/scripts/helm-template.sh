@@ -2,7 +2,7 @@
 # Initialize counter
 num_files=0
 # Parse command-line options
-while getopts d:e:t: option
+while getopts d:z:dt: option
 do
     case "${option}"
     in
