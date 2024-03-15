@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 # Initialize counter
 num_files=0
 # Parse command-line options

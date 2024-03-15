@@ -1,0 +1,35 @@
+{{- $prometheus := .Values.prometheus | default dict }}
+{{- if $prometheus.enable | default false }}
+{{- range $prometheus.servers }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ printf "prometheus-%s" .name | trunc 50 }}
+  namespace: argocd
+spec:
+  project: {{ $.Values.project }}
+  source:
+    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+    path: 'templates/cluster-addons/monitoring/prometheus'
+    targetRevision: {{ $prometheus.version }}
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        {{ toYaml .values | nindent 8 }}
+  destination:
+    namespace: prometheus-system
+    server: {{ .url }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+{{- end }}
+{{- end }}
