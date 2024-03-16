@@ -19,5 +19,3 @@ do
         helm template -n $cluster_name templates/helm-$zone-chart -f $file | tee sites/$dt/$zone/$cluster_name.yaml
     fi
 done
-
-#echo "Found $num_files YAML files in the $dir directory."
