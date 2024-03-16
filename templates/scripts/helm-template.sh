@@ -1,6 +1,4 @@
 #!/bin/bash
-# Initialize counter
-num_files=0
 # Parse command-line options
 while getopts d:e:t: option
 do
@@ -20,7 +18,6 @@ do
         echo "The cluster name in the YAML file is: $cluster_name"
         helm template -n $cluster_name templates/helm-$zone-chart -f $file | tee sites/$dt/$zone/$cluster_name.yaml
     fi
-    ((num_files++))
 done
 
 #echo "Found $num_files YAML files in the $dir directory."
