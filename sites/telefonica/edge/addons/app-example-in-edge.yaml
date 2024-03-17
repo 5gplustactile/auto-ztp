@@ -6,7 +6,7 @@ metadata:
   name: ext-awslb-example-in-edge
   namespace: argocd
 spec:
-  project: telefonica
+  project: addons
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/extras/awslb'
@@ -45,7 +45,7 @@ spec:
         - values.yaml
       values: |
         clusterName: example-in-edge
-  project: telefonica
+  project: addons
   syncPolicy:
     automated:
       prune: true
@@ -74,7 +74,7 @@ spec:
     repoURL: 'https://charts.jetstack.io'
     targetRevision: v1.13.3
     chart: cert-manager
-  project: telefonica
+  project: addons
   syncPolicy:
     automated:
       prune: true
@@ -109,7 +109,7 @@ spec:
         
         null
   sources: []
-  project: telefonica
+  project: addons
   syncPolicy:
     automated:
       prune: true
@@ -128,7 +128,7 @@ metadata:
   name: grafana-example-in-edge
   namespace: argocd
 spec:
-  project: telefonica
+  project: addons
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/monitoring/grafana'
@@ -176,7 +176,7 @@ spec:
         
         null
   sources: []
-  project: telefonica
+  project: addons
   syncPolicy:
     automated:
       prune: true
@@ -214,7 +214,7 @@ spec:
           jobEnabled: false
           upgradeVersionCheck: false
   sources: []
-  project: telefonica
+  project: addons
   syncPolicy:
     automated:
       prune: true
@@ -252,7 +252,7 @@ spec:
           - --kubelet-insecure-tls=true
           - --kubelet-preferred-address-types=InternalIP
 
-  project: telefonica
+  project: addons
   syncPolicy:
     automated:
       prune: true
@@ -271,7 +271,7 @@ metadata:
   name: prometheus-example-in-edge
   namespace: argocd
 spec:
-  project: telefonica
+  project: addons
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/monitoring/prometheus'
@@ -303,7 +303,7 @@ metadata:
   name: skooner-example-in-edge
   namespace: argocd
 spec:
-  project: telefonica
+  project: addons
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/monitoring/skooner'
