@@ -61,7 +61,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-mfw-example-in-ed
+#  name: cert-manager-bcd-example-in-ed
   name: cert-manager-example-in-edge
   namespace: argocd
 spec:
