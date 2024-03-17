@@ -52,7 +52,7 @@ metricServer:
   - name: example-in-edge
     url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
   version: 6.9.3
-project: telefonica
+project: addons
 prometheus:
   enable: true
   servers:
