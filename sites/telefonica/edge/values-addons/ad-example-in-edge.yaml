@@ -1,5 +1,5 @@
 awslb:
-  enable: true
+  enable: false
   servers:
   - name: example-in-edge
     url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
@@ -23,7 +23,7 @@ grafana:
     url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
   version: main
 ingress:
-  enable: false
+  enable: true
   servers:
   - name: example-in-edge
     url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
