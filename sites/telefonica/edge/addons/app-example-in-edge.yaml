@@ -1,0 +1,329 @@
+---
+# Source: Helm cluster addons/templates/aws-lb-controller.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ext-awslb-example-in-edge
+  namespace: argocd
+spec:
+  project: telefonica
+  source:
+    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+    path: 'templates/cluster-addons/extras/awslb'
+    targetRevision: main
+  destination:
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/aws-lb-controller.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: awslb-example-in-edge
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: awslb-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://aws.github.io/eks-charts'
+    targetRevision: 1.6.2
+    chart: aws-load-balancer-controller
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        clusterName: example-in-edge
+  project: telefonica
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/cert-manager.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+#  name: cert-manager-dnt-example-in-ed
+  name: cert-manager-example-in-edge
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: cert-manager
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://charts.jetstack.io'
+    targetRevision: v1.13.3
+    chart: cert-manager
+  project: telefonica
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/external-secrets.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: secret-example-
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: external-secrets-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://charts.external-secrets.io'
+    targetRevision: 0.9.13
+    chart: 'external-secrets'
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        
+        null
+  sources: []
+  project: telefonica
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/grafana.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-example-in-edge
+  namespace: argocd
+spec:
+  project: telefonica
+  source:
+    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+    path: 'templates/cluster-addons/monitoring/grafana'
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        
+        null
+  destination:
+    namespace: grafana-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/kubeclarity.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: clarity-example-in-edge
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: kubeclarity-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://openclarity.github.io/kubeclarity'
+    targetRevision: v2.23.1
+    chart: 'kubeclarity'
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        
+        null
+  sources: []
+  project: telefonica
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/longhorn.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn-example-in-edge
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: longhorn-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://charts.longhorn.io'
+    targetRevision: 1.6.0
+    chart: 'longhorn'
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        
+        null
+        preUpgradeChecker:
+          jobEnabled: false
+          upgradeVersionCheck: false
+  sources: []
+  project: telefonica
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/metric-server.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metric-server-example-in-edge
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: kube-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    targetRevision: 6.9.3
+    chart: metrics-server
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        apiService:
+          create: true
+        extraArgs:
+          - --kubelet-insecure-tls=true
+          - --kubelet-preferred-address-types=InternalIP
+
+  project: telefonica
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/prometheus.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-example-in-edge
+  namespace: argocd
+spec:
+  project: telefonica
+  source:
+    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+    path: 'templates/cluster-addons/monitoring/prometheus'
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        
+        null
+  destination:
+    namespace: prometheus-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/skooner.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: skooner-example-in-edge
+  namespace: argocd
+spec:
+  project: telefonica
+  source:
+    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+    path: 'templates/cluster-addons/monitoring/skooner'
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        
+        null
+  destination:
+    namespace: skooner-system
+    server: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
