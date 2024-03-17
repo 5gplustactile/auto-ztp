@@ -6,7 +6,7 @@ metadata:
   name: ext-awslb-example-in-edge
   namespace: argocd
 spec:
-  project: addons
+  project: telefonica
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/extras/awslb'
@@ -45,7 +45,7 @@ spec:
         - values.yaml
       values: |
         clusterName: example-in-edge
-  project: addons
+  project: telefonica
   syncPolicy:
     automated:
       prune: true
@@ -61,7 +61,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-gli-example-in-ed
+#  name: cert-manager-bjc-example-in-ed
   name: cert-manager-example-in-edge
   namespace: argocd
 spec:
@@ -74,7 +74,7 @@ spec:
     repoURL: 'https://charts.jetstack.io'
     targetRevision: v1.13.3
     chart: cert-manager
-  project: addons
+  project: telefonica
   syncPolicy:
     automated:
       prune: true
@@ -109,7 +109,7 @@ spec:
         
         null
   sources: []
-  project: addons
+  project: telefonica
   syncPolicy:
     automated:
       prune: true
@@ -128,7 +128,7 @@ metadata:
   name: grafana-example-in-edge
   namespace: argocd
 spec:
-  project: addons
+  project: telefonica
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/monitoring/grafana'
@@ -176,7 +176,7 @@ spec:
         
         null
   sources: []
-  project: addons
+  project: telefonica
   syncPolicy:
     automated:
       prune: true
@@ -214,7 +214,7 @@ spec:
           jobEnabled: false
           upgradeVersionCheck: false
   sources: []
-  project: addons
+  project: telefonica
   syncPolicy:
     automated:
       prune: true
@@ -252,7 +252,7 @@ spec:
           - --kubelet-insecure-tls=true
           - --kubelet-preferred-address-types=InternalIP
 
-  project: addons
+  project: telefonica
   syncPolicy:
     automated:
       prune: true
@@ -271,7 +271,7 @@ metadata:
   name: prometheus-example-in-edge
   namespace: argocd
 spec:
-  project: addons
+  project: telefonica
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/monitoring/prometheus'
@@ -303,7 +303,7 @@ metadata:
   name: skooner-example-in-edge
   namespace: argocd
 spec:
-  project: addons
+  project: telefonica
   source:
     repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
     path: 'templates/cluster-addons/monitoring/skooner'
