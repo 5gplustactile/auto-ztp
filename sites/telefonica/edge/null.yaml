@@ -1,0 +1,6 @@
+---
+# Source: edge-clusters/templates/capi-template-outpost.yaml
+# this file install infra in aws (sgs, route-table, ec2, lb)
+# install 1 master (control plane), 1 node (worker) using an existent infra (vcp, igw, natgtw)
+# https://blog.scottlowe.org/2019/09/09/consuming-preexisting-aws-infrastructure-with-cluster-api/
+# https://techbloc.net/archives/4661
