@@ -1,0 +1,45 @@
+awslb:
+  enable: false
+  servers: []
+  version: 1.6.2
+certManager:
+  enable: true
+  servers: []
+  version: v1.13.3
+grafana:
+  enable: true
+  servers: []
+  version: main
+ingress:
+  enable: true
+  servers: []
+  version: 4.9.0
+kubeClarity:
+  enable: true
+  servers: []
+  version: v2.23.1
+longhorn:
+  enable: true
+  servers: []
+  version: 1.6.0
+metalLB:
+  enable: true
+  servers: []
+  version: 0.13.12
+metricServer:
+  enable: true
+  servers: []
+  version: 6.9.3
+project: addons
+prometheus:
+  enable: true
+  servers: []
+  version: main
+skooner:
+  enable: true
+  servers: []
+  version: main
+externalSecret:
+  enable: true
+  servers: []
+  version: 0.9.13

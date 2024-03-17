@@ -30,7 +30,7 @@ metricServer:
   enable: true
   servers: []
   version: 6.9.3
-project: telefonica
+project: addons
 prometheus:
   enable: true
   servers: []

@@ -1,5 +1,5 @@
 awslb:
-  enable: true
+  enable: false
   servers: []
   version: 1.6.2
 certManager:
@@ -23,7 +23,7 @@ grafana:
         environment: region
   version: main
 ingress:
-  enable: false
+  enable: true
   servers: []
   version: 4.9.0
 kubeClarity:
@@ -56,7 +56,7 @@ longhorn:
         ingressClassName: nginx
   version: 1.6.0
 metalLB:
-  enable: false
+  enable: true
   servers: []
   version: 0.13.12
 metricServer:
@@ -65,7 +65,7 @@ metricServer:
   - name: telefonica-region-example-region-0
     url: https://internal-kiq4etp7ipf0gzp7qnbo01gtp7ew-k8s-942763084.eu-west-3.elb.amazonaws.com:6443
   version: 6.9.3
-project: telefonica
+project: addons
 prometheus:
   enable: true
   servers:
