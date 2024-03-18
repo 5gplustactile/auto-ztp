@@ -1,0 +1,6 @@
+clusters:
+- masterNodes: 1
+  name: example-region-0
+  subnetRegion: {}
+  version: v1.25.0
+  workerNodes: 1
