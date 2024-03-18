@@ -162,7 +162,7 @@ module "security_group" {
   tags = var.tags
 }
 resource "aws_security_group" "sgs_vpc_peering" {
-#  count       = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? 1 : 0
+  count       = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? 1 : 0
   name        = "vpc_peering_cluster_mgmt_to_cluster_api"
   description = "Allow traffic from cluster api"
   vpc_id      = module.vpc.vpc_id

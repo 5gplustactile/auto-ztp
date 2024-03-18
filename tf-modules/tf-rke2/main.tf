@@ -28,8 +28,8 @@ module "ec2_instance" {
   instance_type = each.value.control_plane_in_edge ? local.instance_type_outpost : local.instance_type_region
   key_name = var.key_name
   monitoring = var.monitoring
-  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
-#  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
+#  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
+  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
 #  subnet_id = "${var.control_plane_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[0]}"
   subnet_id = each.value.control_plane_in_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[0]
   associate_public_ip_address = false
@@ -127,8 +127,8 @@ module "ec2_instance_workers" {
   instance_type = each.value.worker_in_edge ? local.instance_type_outpost : local.instance_type_region
   key_name = var.key_name
   monitoring = var.monitoring
-  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
-#  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
+#  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
+  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
   subnet_id = each.value.worker_in_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[0]
   associate_public_ip_address = false
   iam_role_description = "IAM Role to EC2 intances"
