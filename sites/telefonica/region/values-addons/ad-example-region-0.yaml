@@ -27,6 +27,15 @@ ingress:
   servers:
   - name: example-region-0
     url: https://internal-wph08h0tdbw4mfysnh892wjzyr12-k8s-714780769.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        annotations:
+          alb.ingress.kubernetes.io/load-balancer-name: grafana-system
+          alb.ingress.kubernetes.io/scheme: internal
+          alb.ingress.kubernetes.io/tags: tactile5g/digital-twins=grafana-system
+          alb.ingress.kubernetes.io/target-type: instance
+        className: alb
+        enabled: false
   version: 4.9.0
 kubeClarity:
   enable: true
