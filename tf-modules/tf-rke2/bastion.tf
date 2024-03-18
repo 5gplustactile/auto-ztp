@@ -15,7 +15,8 @@ module "bastion_host" {
   instance_type = local.instance_type_outpost
   key_name = var.key_name
   monitoring = var.monitoring
-  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
+  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
+#  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
   subnet_id = aws_subnet.tf_outpost_subnet_edge[0].id
   associate_public_ip_address = false
   iam_role_description = "IAM Role to EC2 intances"
