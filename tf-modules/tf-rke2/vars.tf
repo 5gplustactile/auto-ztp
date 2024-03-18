@@ -109,6 +109,7 @@ variable "tags" {
 variable "cidr_block_vpc_digital_twins" {
   type = string
   description = "cidr block vpc digital twins"
+  default = ""
 
 }
 
