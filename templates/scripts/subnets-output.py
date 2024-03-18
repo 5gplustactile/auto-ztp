@@ -68,12 +68,12 @@ else:
                         if cluster['name'] in outpost_subnets_list:
                             cluster['subnetOutpost'] = outpost_subnets_list[cluster['name']]
                         else:
-                            print(f"Cluster name '{cluster['name']}' in file {yaml_file_path} does not match any keys in the subnet JSON files. No changes were made to this cluster.")
+                            print(f"subnetOutpost - Cluster name '{cluster['name']}' in file {yaml_file_path} does not match any keys in the subnet JSON files. No changes were made to this cluster.")
 
                         if cluster['name'] in private_subnets_list:
                             cluster['subnetRegion'] = private_subnets_list[cluster['name']]
                         else:
-                            print(f"Cluster name '{cluster['name']}' in file {yaml_file_path} does not match any keys in the subnet JSON files. No changes were made to this cluster.")
+                            print(f"subnetRegion - Cluster name '{cluster['name']}' in file {yaml_file_path} does not match any keys in the subnet JSON files. No changes were made to this cluster.")
                     else:
                         print(f"No 'name' field found in cluster in file {yaml_file_path}. No changes were made to this cluster.")
                 # Write the updated values back to a new YAML file in the destination directory
