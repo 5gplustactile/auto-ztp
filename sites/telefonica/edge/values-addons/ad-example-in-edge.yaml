@@ -1,67 +1,45 @@
 awslb:
   enable: false
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: 1.6.2
 certManager:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: v1.13.3
 externalSecret:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: 0.9.13
 grafana:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: main
 ingress:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: 4.9.0
 kubeClarity:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: v2.23.1
 longhorn:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: 1.6.0
 metalLB:
   enable: false
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: 0.13.12
 metricServer:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: 6.9.3
 project: addons
 prometheus:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: main
 skooner:
   enable: true
-  servers:
-  - name: example-in-edge
-    url: https://internal-uwuya05e9h8u2oi4fq78z433zrqn-k8s-896455334.eu-west-3.elb.amazonaws.com:6443
+  servers: []
   version: main
