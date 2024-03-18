@@ -99,7 +99,7 @@ module "ec2_instance" {
     "${var.name_lb}-AWSLoadBalancerControllerIAMPolicy" = aws_iam_policy.aws_lb_controller.arn
     "${var.name_lb}-AWSRKE2Policy" = aws_iam_policy.rke2_policy.arn
     CloudWatchAgentServerRole = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-    "S3AccessPolicy" = aws_iam_policy.s3.arn
+    "S3AccessPolicy" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/S3AccessPolicy"
   }
 
   instance_tags = {
@@ -197,7 +197,7 @@ module "ec2_instance_workers" {
     "${var.name_lb}-AWSLoadBalancerControllerIAMPolicy" = aws_iam_policy.aws_lb_controller.arn
     "${var.name_lb}-AWSRKE2Policy" = aws_iam_policy.rke2_policy.arn
     CloudWatchAgentServerRole = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-    "S3AccessPolicy" = aws_iam_policy.s3.arn
+    "S3AccessPolicy" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/S3AccessPolicy"
   }
   instance_tags = {
     "kubernetes.io/cluster/cluster-mgmt": "shared"
