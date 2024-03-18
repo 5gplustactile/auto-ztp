@@ -1,7 +1,6 @@
 clusters:
 - masterNodes: 1
   name: example-region-0
-  subnetOutpost: {}
   subnetRegion:
   - subnet-0969234f3d401b7d8
   - subnet-0d95757e1b58f10b8
