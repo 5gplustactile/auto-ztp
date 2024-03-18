@@ -42,15 +42,15 @@ output "sgs_lni_interface_id" {
   
 }
 
-output "sgs_vpc_peering_arn" {
-  description = "Arn vpc peering security group"
-  value       = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? aws_security_group.sgs_vpc_peering[0].arn : null
-}
-
-output "sgs_vpc_peering_id" {
-  description = "Id vpc peering security group"
-  value       = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? aws_security_group.sgs_vpc_peering[0].id : null
-}
+#output "sgs_vpc_peering_arn" {
+#  description = "Arn vpc peering security group"
+#  value       = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? aws_security_group.sgs_vpc_peering[0].arn : null
+#}
+#
+#output "sgs_vpc_peering_id" {
+#  description = "Id vpc peering security group"
+#  value       = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? aws_security_group.sgs_vpc_peering[0].id : null
+#}
 
 output "vpc_id" {
     description = "Id of vpc"
