@@ -121,3 +121,20 @@ token: K105ed75f67c3b9499308b3::server:140aeee802846e0c9
 ### Update the node
 # kubectl patch node "${NODE_NAME}" -p "{\"spec\":{\"providerID\":\"${PROVIDER_ID}\"}}"
 ```
+
+troubleshoot:
+-------------
+```
+$ journalctl -u rke2-server
+$ journalctl -u rke2-agent
+
+# Some systemd configurations may also write combined logs to /var/log/syslog
+
+# The Containerd logs are written to /var/lib/rancher/rke2/agent/containerd/containerd.log.
+
+# The kubelet logs are written to /var/lib/rancher/rke2/agent/logs/kubelet.log.
+
+# Logs from each Kubernetes Pod can be accessed with kubectl: /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml logs -n kube-system -l component=kube-apiserver
+
+# Logs from each container are written to /var/log/pods or can be accessed with crictl. 
+```

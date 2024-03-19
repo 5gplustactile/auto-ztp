@@ -3,9 +3,9 @@
 
 - name: Set system's hostname
   ansible.builtin.hostname:
-    name: "{{ ansible_host }}"
+    name: "{{ hostvars[item]['ansible_host'] }}"
   loop: "{{ groups['workers'][0:] }}"
-  delegate_to: "{{ item }}"    
+  delegate_to: "{{ item }}"   
 
 - name: stop firewall
   ansible.builtin.systemd:
@@ -150,20 +150,18 @@
   loop: "{{ groups['workers'][0:] }}"
   delegate_to: "{{ item }}"
   
+- name: find kubectl file
+  ansible.builtin.find:
+    paths: /var/lib/rancher/rke2/data/
+    patterns: kubectl
+    file_type: file
+    recurse: yes
+  register: kubectl_path
 
-- name: Add Kubernetes apt repository
-  apt_repository:
-    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
-    state: present
-  loop: "{{ groups['workers'][0:] }}"
-  delegate_to: "{{ item }}"
-  
-
-- name: Install kubectl
-  apt:
-    name: kubectl
-    state: present
-    update_cache: yes
-  loop: "{{ groups['workers'][0:] }}"
-  delegate_to: "{{ item }}"
+- name: create a symbolic link for kubectl
+  ansible.builtin.file:
+    path: /usr/local/bin/kubectl
+    src: "{{ kubectl_path.files[0].path }}"
+    state: link
+    force: yes
   
