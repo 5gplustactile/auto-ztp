@@ -164,4 +164,9 @@
     src: "{{ kubectl_path.files[0].path }}"
     state: link
     force: yes
-  
+
+- name: install kubectl
+  shell: |
+    snap install kubectl --classic
+  loop: "{{ groups['workers'][0:] }}"
+  delegate_to: "{{ item }}"
