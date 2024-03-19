@@ -155,3 +155,8 @@
 - name: Update the node
   shell: kubectl patch node "{{ node_name.stdout }}" -p "{\"spec\":{\"providerID\":\"{{ provider_id }}\"}}" --kubeconfig /etc/rancher/rke2/rke2.yaml
   when: existing_provider_id.stdout == ""
+
+- name: Remove taint
+  shell: >
+    kubectl taint nodes "{{ node_name.stdout }}" node.cloudprovider.kubernetes.io/uninitialized=false:NoSchedule- --kubeconfig /etc/rancher/rke2/rke2.yaml
+  ignore_errors: yes

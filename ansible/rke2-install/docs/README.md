@@ -49,6 +49,8 @@ kubectl rollout status daemonset -n kube-system aws-cloud-controller-manager
 ### Update the node
 # kubectl patch node "${NODE_NAME}" -p "{\"spec\":{\"providerID\":\"${PROVIDER_ID}\"}}"
 
+kubectl taint nodes <node-name> node.cloudprovider.kubernetes.io/uninitialized=false:NoSchedule-
+
 ```
 
 master-1-X:
@@ -87,6 +89,8 @@ tls-san:
 ### Update the node
 # kubectl patch node "${NODE_NAME}" -p "{\"spec\":{\"providerID\":\"${PROVIDER_ID}\"}}"
 
+kubectl taint nodes <node-name> node.cloudprovider.kubernetes.io/uninitialized=false:NoSchedule-
+
 ```
 
 worker-0-X:
@@ -120,6 +124,9 @@ token: K105ed75f67c3b9499308b3::server:140aeee802846e0c9
 
 ### Update the node
 # kubectl patch node "${NODE_NAME}" -p "{\"spec\":{\"providerID\":\"${PROVIDER_ID}\"}}"
+
+kubectl taint nodes <node-name> node.cloudprovider.kubernetes.io/uninitialized=false:NoSchedule-
+
 ```
 
 troubleshoot:
