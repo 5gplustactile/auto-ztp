@@ -1,5 +1,5 @@
 clusters:
-- masterNodes: 2
+- masterNodes: 3
   name: example-in-edge
   subnetOutpost:
   - subnet-0d939787416fea69c
