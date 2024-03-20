@@ -39,7 +39,7 @@ ingress:
     url: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
   version: 4.9.0
 kubeClarity:
-  enable: true
+  enable: false
   servers:
   - name: opentwins
     url: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
