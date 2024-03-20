@@ -33,8 +33,7 @@ spec:
     vpc:
       id: vpc-08291124993d8220b
     subnets:
-      - id: default-subnet-1  # private subnet outpost
-      - id: default-subnet-2  # private subnet outpost
+      - id: subnet-0ba09ef3ac75ddfdd  # private subnet outpost
 ---
 # Source: edge-clusters/templates/capi-template-outpost.yaml
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
