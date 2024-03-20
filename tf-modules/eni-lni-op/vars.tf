@@ -14,8 +14,8 @@ variable "instances" {
   type = map(string)
   description = "Map of instance IDs to CIDR blocks"
   default = {
-    "i-0140033d9575fe44d" = "172.1.8.0/24"
-    "i-0e4703f525a1f9482" = "172.1.9.0/24"
+    "i-0140033d9575fe44d" = "172.1.8.0/24"  #CIDR to the subnet that will be created
+    "i-0e4703f525a1f9482" = "172.1.9.0/24"  #CIDR to the subnet that will be created
   }
 }
 
