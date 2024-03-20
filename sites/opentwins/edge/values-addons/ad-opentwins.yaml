@@ -27,8 +27,10 @@ grafana:
       ingress:
         annotations:
         className: nginx
-        enabled: true
+        enabled: false
         environment: edge
+      service:
+        type: LoadBalancer
   version: main
 ingress:
   enable: true
@@ -44,7 +46,7 @@ kubeClarity:
     values:
       kubeclarity:
         ingress:
-          enabled: true
+          enabled: false
           ingressClassName: nginx
         service:
           type: LoadBalancer
@@ -56,7 +58,7 @@ longhorn:
     url: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
     values:
       ingress:
-        enabled: true
+        enabled: false
         host: longhorn-opentwins.tactile5g.int
         ingressClassName: nginx
   version: 1.6.0
@@ -81,8 +83,10 @@ prometheus:
     values:
       ingress:
         className: nginx
-        enabled: true
+        enabled: false
         environment: edge
+      service:
+        type: LoadBalancer
   version: main
 skooner:
   enable: true
@@ -92,6 +96,8 @@ skooner:
     values:
       ingress:
         className: nginx
-        enabled: true
+        enabled: false
         environment: edge
+      service:
+        type: LoadBalancer
   version: main
