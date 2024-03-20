@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-see-opentwins
+#  name: cert-manager-fkl-opentwins
   name: cert-manager-opentwins
   namespace: argocd
 spec:
@@ -86,7 +86,7 @@ spec:
           enabled: false
           environment: edge
         service:
-          type: LoadBalancer
+          type: NodePort
   destination:
     namespace: grafana-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
@@ -167,7 +167,7 @@ spec:
             enabled: false
             ingressClassName: nginx
           service:
-            type: LoadBalancer
+            type: NodePort
   sources: []
   project: addons
   syncPolicy:
@@ -227,7 +227,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-opentwins
-#  name: metallb-vat-opentwins
+#  name: metallb-jjc-opentwins
   namespace: argocd
 spec:
   destination:
@@ -256,7 +256,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-hoa-opentwins
+#  name: ext-metallb-vjg-opentwins
   name: ext-metallb-opentwins
   namespace: argocd
 spec:
@@ -339,7 +339,7 @@ spec:
           enabled: false
           environment: edge
         service:
-          type: LoadBalancer
+          type: NodePort
   destination:
     namespace: prometheus-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
@@ -376,7 +376,7 @@ spec:
           enabled: false
           environment: edge
         service:
-          type: LoadBalancer
+          type: NodePort
   destination:
     namespace: skooner-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
