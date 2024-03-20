@@ -1,67 +1,9 @@
 ---
-# Source: Helm cluster addons/templates/aws-lb-controller.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: ext-awslb-opentwins
-  namespace: argocd
-spec:
-  project: addons
-  source:
-    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
-    path: 'templates/cluster-addons/extras/awslb'
-    targetRevision: main
-  destination:
-    server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
-  syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - PrunePropagationPolicy=background
----
-# Source: Helm cluster addons/templates/aws-lb-controller.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: awslb-opentwins
-  namespace: argocd
-spec:
-  destination:
-    name: ''
-    namespace: awslb-system
-    server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
-  source:
-    path: ''
-    repoURL: 'https://aws.github.io/eks-charts'
-    targetRevision: 1.6.2
-    chart: aws-load-balancer-controller
-    helm:
-      valueFiles:
-        - values.yaml
-      values: |
-        clusterName: opentwins
-  project: addons
-  syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - PrunePropagationPolicy=background
----
 # Source: Helm cluster addons/templates/cert-manager.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-pxm-opentwins
+#  name: cert-manager-pym-opentwins
   name: cert-manager-opentwins
   namespace: argocd
 spec:
@@ -107,7 +49,7 @@ spec:
         - values.yaml
       values: |
         
-        null
+        installCRDs: true
   sources: []
   project: addons
   syncPolicy:
@@ -138,10 +80,54 @@ spec:
         - values.yaml
       values: |
         
-        null
+        ingress:
+          annotations: null
+          className: nginx
+          enabled: true
+          environment: edge
   destination:
     namespace: grafana-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/ingress-nginx.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ing-opentwins
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: ingress-system
+    server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    targetRevision: 4.9.0
+    chart: 'ingress-nginx'
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        rbac:
+          create: true
+        controller:
+          service:
+            type: NodePort
+          extraArgs:
+            enable-ssl-passthrough: "true"
+  sources: []
+  project: addons
   syncPolicy:
     automated:
       prune: true
@@ -174,7 +160,12 @@ spec:
         - values.yaml
       values: |
         
-        null
+        kubeclarity:
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+          service:
+            type: LoadBalancer
   sources: []
   project: addons
   syncPolicy:
@@ -209,12 +200,72 @@ spec:
         - values.yaml
       values: |
         
-        null
+        ingress:
+          enabled: true
+          host: longhorn-opentwins.tactile5g.int
+          ingressClassName: nginx
         preUpgradeChecker:
           jobEnabled: false
           upgradeVersionCheck: false
   sources: []
   project: addons
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/metallb.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb-opentwins
+#  name: metallb-nxx-opentwins
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: metallb-system
+    server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://metallb.github.io/metallb/'
+    targetRevision: 0.13.12
+    chart: 'metallb'
+  sources: []
+  project: addons
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/metallb.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+#  name: ext-metallb-vnn-opentwins
+  name: ext-metallb-opentwins
+  namespace: argocd
+spec:
+  project: addons
+  source:
+    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+    path: 'templates/cluster-addons/extras/metallb'
+    targetRevision: main
+  destination:
+    namespace: metallb-system
+    server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
   syncPolicy:
     automated:
       prune: true
@@ -281,7 +332,10 @@ spec:
         - values.yaml
       values: |
         
-        null
+        ingress:
+          className: nginx
+          enabled: true
+          environment: edge
   destination:
     namespace: prometheus-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
@@ -313,7 +367,10 @@ spec:
         - values.yaml
       values: |
         
-        null
+        ingress:
+          className: nginx
+          enabled: true
+          environment: edge
   destination:
     namespace: skooner-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
