@@ -1,5 +1,5 @@
 clusters:
-- masterNodes: 1
+- masterNodes: 2
   name: example-in-edge
   subnetOutpost:
   - subnet-0d939787416fea69c
@@ -8,4 +8,4 @@ clusters:
   - subnet-02bce1ef1826f6b10
   - subnet-077acefbca36ef65e
   version: v1.25.0
-  workerNodes: 1
+  workerNodes: 2
