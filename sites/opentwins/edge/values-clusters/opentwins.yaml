@@ -1,0 +1,10 @@
+clusters:
+- masterNodes: 1
+  name: opentwins
+  subnetOutpost: {}
+  subnetRegion:
+  - subnet-080e0893d0893e8ba
+  - subnet-09f737a38442a38e9
+  - subnet-0233efa82b808ace5
+  version: v1.25.0
+  workerNodes: 1
