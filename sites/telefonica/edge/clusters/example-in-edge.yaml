@@ -151,7 +151,7 @@ spec:
       apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
       kind: AWSMachineTemplate
       name: edge-clusters-example-in-edge-control-plane
-  replicas: 2
+  replicas: 3
   version: v1.25.0
 ---
 # Source: edge-clusters/templates/capi-template-outpost.yaml
