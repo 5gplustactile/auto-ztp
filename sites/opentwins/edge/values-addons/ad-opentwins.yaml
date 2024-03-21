@@ -49,7 +49,7 @@ kubeClarity:
           enabled: false
           ingressClassName: nginx
         service:
-          type: NodePort
+          type: LoadBalancer
   version: v2.23.1
 longhorn:
   enable: true
