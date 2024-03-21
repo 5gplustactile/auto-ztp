@@ -51,6 +51,8 @@ persistence:
 service:
   type: NodePort
   port: 80
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.11.29.100
 
 ingress:
   enabled: true

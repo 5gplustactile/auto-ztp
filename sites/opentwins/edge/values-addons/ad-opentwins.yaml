@@ -31,6 +31,8 @@ grafana:
         environment: edge
       service:
         type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.11.29.101
   version: main
 ingress:
   enable: true
