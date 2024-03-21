@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-zph-opentwins
+#  name: cert-manager-xzi-opentwins
   name: cert-manager-opentwins
   namespace: argocd
 spec:
@@ -187,7 +187,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-opentwins
-#  name: metallb-mzv-opentwins
+#  name: metallb-vpy-opentwins
   namespace: argocd
 spec:
   destination:
@@ -216,7 +216,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-avd-opentwins
+#  name: ext-metallb-qvi-opentwins
   name: ext-metallb-opentwins
   namespace: argocd
 spec:
