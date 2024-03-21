@@ -30,7 +30,7 @@ grafana:
         enabled: false
         environment: edge
       service:
-        type: NodePort
+        type: LoadBalancer
   version: main
 ingress:
   enable: true
