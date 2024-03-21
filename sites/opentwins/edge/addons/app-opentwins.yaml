@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-cxn-opentwins
+#  name: cert-manager-thm-opentwins
   name: cert-manager-opentwins
   namespace: argocd
 spec:
@@ -86,7 +86,7 @@ spec:
           enabled: false
           environment: edge
         service:
-          type: LoadBalancer
+          type: NodePort
   destination:
     namespace: grafana-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
@@ -187,7 +187,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-opentwins
-#  name: metallb-bgc-opentwins
+#  name: metallb-geu-opentwins
   namespace: argocd
 spec:
   destination:
@@ -216,7 +216,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-slr-opentwins
+#  name: ext-metallb-era-opentwins
   name: ext-metallb-opentwins
   namespace: argocd
 spec:
