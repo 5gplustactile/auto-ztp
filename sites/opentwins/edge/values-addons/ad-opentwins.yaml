@@ -30,7 +30,7 @@ grafana:
         enabled: false
         environment: edge
       service:
-        type: LoadBalancer
+        type: NodePort
   version: main
 ingress:
   enable: true
@@ -63,7 +63,7 @@ longhorn:
         ingressClassName: nginx
   version: 1.6.0
 metalLB:
-  enable: true
+  enable: false
   servers:
   - name: opentwins
     url: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
