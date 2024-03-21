@@ -66,6 +66,26 @@ module "bastion_host" {
                 sudo service ssh restart
 
                 sudo usermod -aG sudo labuser
+                sudo apt update -y
+                sudo apt install netplan.io -y
+
+                sudo echo "
+                network:
+                  version: 2
+                  renderer: networkd
+                  ethernets:
+                    ens6:
+                      dhcp4: true
+                      dhcp4-overrides:
+                        use-routes: false
+                      routes:
+                        - to: 10.11.0.0/16
+                          via: 10.11.29.1
+                        - to: 10.182.32.0/24
+                          via: 10.11.29.1                
+                " | sudo tee -a /etc/netplan/ens6.yaml
+
+                netplan apply && ip link set ens6 up
     EOF
 
   root_block_device = []
