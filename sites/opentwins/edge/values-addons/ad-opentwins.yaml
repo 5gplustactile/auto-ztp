@@ -32,7 +32,7 @@ grafana:
       service:
         type: LoadBalancer
         annotations:
-          metallb.universe.tf/loadBalancerIPs: 10.11.29.101
+          metallb.universe.tf/loadBalancerIPs: 10.11.29.100
   version: main
 ingress:
   enable: true
@@ -88,7 +88,9 @@ prometheus:
         enabled: false
         environment: edge
       service:
-        type: NodePort
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.11.29.101
   version: main
 skooner:
   enable: true
@@ -101,5 +103,7 @@ skooner:
         enabled: false
         environment: edge
       service:
-        type: NodePort
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.11.29.102
   version: main

@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-raa-opentwins
+#  name: cert-manager-iwt-opentwins
   name: cert-manager-opentwins
   namespace: argocd
 spec:
@@ -87,7 +87,7 @@ spec:
           environment: edge
         service:
           annotations:
-            metallb.universe.tf/loadBalancerIPs: 10.11.29.101
+            metallb.universe.tf/loadBalancerIPs: 10.11.29.100
           type: LoadBalancer
   destination:
     namespace: grafana-system
@@ -189,7 +189,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-opentwins
-#  name: metallb-hhv-opentwins
+#  name: metallb-lld-opentwins
   namespace: argocd
 spec:
   destination:
@@ -218,7 +218,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-bho-opentwins
+#  name: ext-metallb-zpu-opentwins
   name: ext-metallb-opentwins
   namespace: argocd
 spec:
@@ -301,7 +301,9 @@ spec:
           enabled: false
           environment: edge
         service:
-          type: NodePort
+          annotations:
+            metallb.universe.tf/loadBalancerIPs: 10.11.29.101
+          type: LoadBalancer
   destination:
     namespace: prometheus-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
@@ -338,7 +340,9 @@ spec:
           enabled: false
           environment: edge
         service:
-          type: NodePort
+          annotations:
+            metallb.universe.tf/loadBalancerIPs: 10.11.29.102
+          type: LoadBalancer
   destination:
     namespace: skooner-system
     server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
