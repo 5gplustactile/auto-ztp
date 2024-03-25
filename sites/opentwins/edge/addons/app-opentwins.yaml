@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-mxl-opentwins
+#  name: cert-manager-sbb-opentwins
   name: cert-manager-opentwins
   namespace: argocd
 spec:
@@ -143,46 +143,6 @@ spec:
       - PruneLast=true
       - PrunePropagationPolicy=background
 ---
-# Source: Helm cluster addons/templates/kubeclarity.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: clarity-opentwins
-  namespace: argocd
-spec:
-  destination:
-    name: ''
-    namespace: kubeclarity-system
-    server: https://internal-kx7x60bjvby2tvc0r53vvci12514-k8s-663204783.eu-west-3.elb.amazonaws.com:6443
-  source:
-    path: ''
-    repoURL: 'https://openclarity.github.io/kubeclarity'
-    targetRevision: v2.23.1
-    chart: 'kubeclarity'
-    helm:
-      valueFiles:
-        - values.yaml
-      values: |
-        
-        kubeclarity:
-          ingress:
-            enabled: false
-            ingressClassName: nginx
-          service:
-            type: LoadBalancer
-  sources: []
-  project: addons
-  syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - PrunePropagationPolicy=background
----
 # Source: Helm cluster addons/templates/longhorn.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -229,7 +189,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-opentwins
-#  name: metallb-eaw-opentwins
+#  name: metallb-rvb-opentwins
   namespace: argocd
 spec:
   destination:
@@ -258,7 +218,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-bjq-opentwins
+#  name: ext-metallb-ppf-opentwins
   name: ext-metallb-opentwins
   namespace: argocd
 spec:
