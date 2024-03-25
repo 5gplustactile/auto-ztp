@@ -111,9 +111,3 @@ output "bastion_host_name" {
   value       = var.name_bastion_host
   
 }
-
-#output "bucket_arn" {
-#  description = "Arn Bucket Config files"
-#  value       = aws_s3_bucket.bucket.arn
-#  
-#}
