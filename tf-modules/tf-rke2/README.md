@@ -40,7 +40,7 @@ sudo install /home/ubuntu/ktail /usr/local/bin/ktail
 ```
 ## Dependencies
 
-- Before execute this module, execute the s3-bucket module. It has the configurations files to execute automations in cloud-init EC2 intances.
+- Before execute this module, execute the s3-bucket module if not already deployed. It has the configurations files to execute automations in cloud-init EC2 intances.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
