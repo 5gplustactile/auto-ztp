@@ -1,0 +1,11 @@
+clusters:
+- masterNodes: 1
+  name: telefonica
+  subnetOutpost:
+  - subnet-0eb92964ef1715acc
+  subnetRegion:
+  - subnet-0a07e0be4c580d189
+  - subnet-0c4582c5050930d96
+  - subnet-0b8ee5d90a7b7ffd5
+  version: v1.25.0
+  workerNodes: 1
