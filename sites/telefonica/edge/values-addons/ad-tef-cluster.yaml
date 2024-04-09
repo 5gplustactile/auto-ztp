@@ -1,0 +1,67 @@
+awslb:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: 1.6.2
+certManager:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: v1.13.3
+externalSecret:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: 0.9.13
+grafana:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: main
+ingress:
+  enable: false
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: 4.9.0
+kubeClarity:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: v2.23.1
+longhorn:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: 1.6.0
+metalLB:
+  enable: false
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: 0.13.12
+metricServer:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: 6.9.3
+project: addons
+prometheus:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: main
+skooner:
+  enable: true
+  servers:
+  - name: tef-cluster
+    url: https://internal-0x9whnf58sqwk8emb6q5fkfgp5d8-k8s-1325027551.eu-west-3.elb.amazonaws.com:6443
+  version: main
