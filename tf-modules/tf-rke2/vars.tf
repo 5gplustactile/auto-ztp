@@ -118,3 +118,31 @@ variable "email_list" {
   type        = list(string)
   default     = ["email1@example.com", "email2@example.com", "email3@example.com"]
 }
+
+variable "outpost_arn" {
+  description = "outpost arn"
+  type = string
+  default = ""
+  
+}
+
+variable "ami" {
+  description = "ami of iamge in aws"
+  type = string
+  default = ""
+  
+}
+
+variable "instance_type_region" {
+  description = "instance type in aws region"
+  type = string
+  default = "t3.medium"
+  
+}
+
+variable "instance_type_outpost" {
+  description = "instance type in aws outpost"
+  type = string
+  default = "c6id.2xlarge"
+  
+}

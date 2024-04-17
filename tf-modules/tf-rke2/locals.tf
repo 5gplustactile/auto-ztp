@@ -16,10 +16,10 @@ locals {
   region              = data.aws_region.current.name
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
   username = data.aws_caller_identity.current.user_id
-  ami = "ami-05b5a865c3579bbc4"
-  instance_type_outpost = "c6id.2xlarge"
-  instance_type_region = "t3.medium"
-  outpost_arn = "arn:aws:outposts:eu-west-3:774986117405:outpost/op-067dcd1b4637f98ab"
+  ami = var.ami
+  instance_type_outpost = var.instance_type_outpost
+  instance_type_region = var.instance_type_region
+  outpost_arn = var.outpost_arn
   root_block_device = [
     {
       volume_type           = "gp2"
