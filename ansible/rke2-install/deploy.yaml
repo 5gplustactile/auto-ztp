@@ -43,6 +43,7 @@
 
 - name: getting kubeconfig from masters
   hosts: masters[0]
+  become: yes
   vars_files:
        - common_vars.yml
   tasks:
