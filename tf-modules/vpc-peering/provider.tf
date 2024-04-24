@@ -9,7 +9,7 @@ terraform {
 
 provider "aws" {
   region = "eu-west-3"
-  profile = "uma"
+#  profile = "uma"
   default_tags {
     tags = {
       subject = "terraform to vpc peering"
