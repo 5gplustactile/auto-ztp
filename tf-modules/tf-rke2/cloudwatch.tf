@@ -17,7 +17,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_masters" {
     evaluation_periods  = "2"
     metric_name         = "mem_used_percent"
     namespace           = "CWAgent"
-    period              = "120"
+    period              = "600"
     statistic           = "Average"
     threshold           = "80"
     alarm_description   = "This metric checks if memory utilization is greater than 80%"
@@ -35,7 +35,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_workers" {
     evaluation_periods  = "2"
     metric_name         = "mem_used_percent"
     namespace           = "CWAgent"
-    period              = "120"
+    period              = "600"
     statistic           = "Average"
     threshold           = "80"
     alarm_description   = "This metric checks if memory utilization is greater than 80%"
@@ -53,7 +53,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_space_utilization_masters" {
     evaluation_periods  = "2"
     metric_name         = "disk_used_percent"
     namespace           = "CWAgent"
-    period              = "120"
+    period              = "600"
     statistic           = "Average"
     threshold           = "80"
     alarm_description   = "This metric checks if disk space utilization is greater than 80%"
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_space_utilization_workers" {
     evaluation_periods  = "2"
     metric_name         = "disk_used_percent"
     namespace           = "CWAgent"
-    period              = "120"
+    period              = "600"
     statistic           = "Average"
     threshold           = "80"
     alarm_description   = "This metric checks if disk space utilization is greater than 80%"
@@ -102,7 +102,7 @@ resource "aws_cloudwatch_dashboard" "dashboard_cluster" {
         "metrics": [
           ${join(",\n", [for instance in values(module.ec2_instance) : "[ \"CWAgent\", \"disk_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\", \"path\", \"/\", \"device\", \"nvme0n1p1\", \"fstype\", \"ext4\" ]"])}
         ],
-        "period": 300,
+        "period": 600,
         "stat": "Average",
         "region": "${local.region}",
         "title": "Masters Disk Used Percent"
@@ -118,7 +118,7 @@ resource "aws_cloudwatch_dashboard" "dashboard_cluster" {
         "metrics": [
           ${join(",\n", [for instance in values(module.ec2_instance) : "[ \"CWAgent\", \"mem_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\" ]"])}
         ],
-        "period": 300,
+        "period": 600,
         "stat": "Average",
         "region": "${local.region}",
         "title": "Masters Memory Used Percent"
@@ -134,7 +134,7 @@ resource "aws_cloudwatch_dashboard" "dashboard_cluster" {
         "metrics": [
           ${join(",\n", [for instance in values(module.ec2_instance_workers) : "[ \"CWAgent\", \"disk_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\", \"path\", \"/\", \"device\", \"nvme0n1p1\", \"fstype\", \"ext4\" ]"])}
         ],
-        "period": 300,
+        "period": 600,
         "stat": "Average",
         "region": "${local.region}",
         "title": "Workers Disk Used Percent"
@@ -150,7 +150,7 @@ resource "aws_cloudwatch_dashboard" "dashboard_cluster" {
         "metrics": [
           ${join(",\n", [for instance in values(module.ec2_instance_workers) : "[ \"CWAgent\", \"mem_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\" ]"])}
         ],
-        "period": 300,
+        "period": 600,
         "stat": "Average",
         "region": "${local.region}",
         "title": "Workers Memory Used Percent"
