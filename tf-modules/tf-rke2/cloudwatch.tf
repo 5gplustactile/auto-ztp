@@ -7,7 +7,7 @@ resource "aws_sns_topic" "alarm" {
 resource "aws_sns_topic_subscription" "email" {
   count     = var.monitoring ? length(var.email_list) : 0
 
-  topic_arn = aws_sns_topic.alarm.arn
+  topic_arn = aws_sns_topic.alarm[0].arn
   protocol  = "email"
   endpoint  = var.email_list[count.index]
 }
@@ -24,7 +24,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_masters" {
     statistic           = "Average"
     threshold           = "80"
     alarm_description   = "This metric checks if memory utilization is greater than 80%"
-    alarm_actions       = [aws_sns_topic.alarm.arn]
+    alarm_actions       = [aws_sns_topic.alarm[0].arn]
     dimensions = {
       InstanceId = element(local.list_ec2, count.index)
     }
@@ -42,7 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_workers" {
     statistic           = "Average"
     threshold           = "80"
     alarm_description   = "This metric checks if memory utilization is greater than 80%"
-    alarm_actions       = [aws_sns_topic.alarm.arn]
+    alarm_actions       = [aws_sns_topic.alarm[0].arn]
     dimensions = {
       InstanceId = element(local.list_ec2_workers, count.index)
     }
