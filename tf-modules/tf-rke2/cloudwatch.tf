@@ -1,16 +1,19 @@
 resource "aws_sns_topic" "alarm" {
+  count = var.monitoring ? 1 : 0
+
   name = "${var.vpc_name}-topic"
 }
 
 resource "aws_sns_topic_subscription" "email" {
-  count     = length(var.email_list)
+  count     = var.monitoring ? length(var.email_list) : 0
+
   topic_arn = aws_sns_topic.alarm.arn
   protocol  = "email"
   endpoint  = var.email_list[count.index]
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_utilization_masters" {
-    count = length(local.list_ec2)
+    count = var.monitoring ? length(local.list_ec2) : 0
 
     alarm_name          = "master-memory-high-${element(local.list_ec2, count.index)}"
     comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -28,7 +31,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_masters" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_utilization_workers" {
-    count = length(local.list_ec2_workers)
+    count = var.monitoring ?  length(local.list_ec2_workers) : 0
 
     alarm_name          = "worker-memory-high-${element(local.list_ec2_workers, count.index)}"
     comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -46,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_workers" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "disk_space_utilization_masters" {
-    count = length(local.list_ec2)
+    count = var.monitoring ? length(local.list_ec2) : 0
 
     alarm_name          = "master-disk-space-high-${element(local.list_ec2, count.index)}"
     comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -67,7 +70,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_space_utilization_masters" {
 
 
 resource "aws_cloudwatch_metric_alarm" "disk_space_utilization_workers" {
-    count = length(local.list_ec2_workers)
+    count = var.monitoring ? length(local.list_ec2_workers) : 0
 
     alarm_name          = "worker-disk-space-high-${element(local.list_ec2_workers, count.index)}"
     comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -87,8 +90,9 @@ resource "aws_cloudwatch_metric_alarm" "disk_space_utilization_workers" {
 }
 
 resource "aws_cloudwatch_dashboard" "dashboard_cluster" {
-  dashboard_name = "${var.vpc_name}-dashboard"
+  count = var.monitoring ? 1 : 0
 
+  dashboard_name = "${var.vpc_name}-dashboard"
   dashboard_body = <<EOF
 {
   "widgets": [
