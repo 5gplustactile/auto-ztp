@@ -61,7 +61,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-rtc-core5g
+#  name: cert-manager-iws-core5g
   name: cert-manager-core5g
   namespace: argocd
 spec:
@@ -153,6 +153,46 @@ spec:
       - PruneLast=true
       - PrunePropagationPolicy=background
 ---
+# Source: Helm cluster addons/templates/ingress-nginx.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ing-core5g
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: ingress-system
+    server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    targetRevision: 4.9.0
+    chart: 'ingress-nginx'
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        rbac:
+          create: true
+        controller:
+          service:
+            type: NodePort
+          extraArgs:
+            enable-ssl-passthrough: "true"
+  sources: []
+  project: addons
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
 # Source: Helm cluster addons/templates/kubeclarity.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -215,6 +255,63 @@ spec:
           upgradeVersionCheck: false
   sources: []
   project: addons
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/metallb.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb-core5g
+#  name: metallb-fln-core5g
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: metallb-system
+    server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
+  source:
+    path: ''
+    repoURL: 'https://metallb.github.io/metallb/'
+    targetRevision: 0.13.12
+    chart: 'metallb'
+  sources: []
+  project: addons
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
+      - PrunePropagationPolicy=background
+---
+# Source: Helm cluster addons/templates/metallb.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+#  name: ext-metallb-ghr-core5g
+  name: ext-metallb-core5g
+  namespace: argocd
+spec:
+  project: addons
+  source:
+    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
+    path: 'templates/cluster-addons/extras/metallb'
+    targetRevision: main
+  destination:
+    namespace: metallb-system
+    server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
   syncPolicy:
     automated:
       prune: true

@@ -23,7 +23,7 @@ grafana:
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
   version: main
 ingress:
-  enable: false
+  enable: true
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
@@ -41,7 +41,7 @@ longhorn:
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
   version: 1.6.0
 metalLB:
-  enable: false
+  enable: true
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
