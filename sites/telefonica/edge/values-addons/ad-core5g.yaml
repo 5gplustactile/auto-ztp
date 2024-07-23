@@ -17,13 +17,13 @@ externalSecret:
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
   version: 0.9.13
 grafana:
-  enable: true
+  enable: false
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
   version: main
 ingress:
-  enable: true
+  enable: false
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
