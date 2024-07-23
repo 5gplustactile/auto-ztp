@@ -61,7 +61,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-lmy-core5g
+#  name: cert-manager-oae-core5g
   name: cert-manager-core5g
   namespace: argocd
 spec:
@@ -177,7 +177,10 @@ spec:
         - values.yaml
       values: |
         
-        null
+        ingress:
+          enabled: false
+          host: longhorn-core5g.tactile5g.int
+          ingressClassName: nginx
         preUpgradeChecker:
           jobEnabled: false
           upgradeVersionCheck: false
@@ -199,7 +202,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-core5g
-#  name: metallb-iuv-core5g
+#  name: metallb-tdw-core5g
   namespace: argocd
 spec:
   destination:
@@ -228,7 +231,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-frr-core5g
+#  name: ext-metallb-huv-core5g
   name: ext-metallb-core5g
   namespace: argocd
 spec:

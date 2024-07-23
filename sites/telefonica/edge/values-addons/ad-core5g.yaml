@@ -39,6 +39,11 @@ longhorn:
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        enabled: false
+        host: longhorn-core5g.tactile5g.int
+        ingressClassName: nginx
   version: 1.6.0
 metalLB:
   enable: true
