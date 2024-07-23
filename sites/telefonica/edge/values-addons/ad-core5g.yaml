@@ -29,7 +29,7 @@ ingress:
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
   version: 4.9.0
 kubeClarity:
-  enable: true
+  enable: false
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443

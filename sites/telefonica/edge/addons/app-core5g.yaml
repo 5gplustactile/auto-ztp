@@ -61,7 +61,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-oae-core5g
+#  name: cert-manager-sde-core5g
   name: cert-manager-core5g
   namespace: argocd
 spec:
@@ -102,41 +102,6 @@ spec:
     repoURL: 'https://charts.external-secrets.io'
     targetRevision: 0.9.13
     chart: 'external-secrets'
-    helm:
-      valueFiles:
-        - values.yaml
-      values: |
-        
-        null
-  sources: []
-  project: addons
-  syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - PrunePropagationPolicy=background
----
-# Source: Helm cluster addons/templates/kubeclarity.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: clarity-core5g
-  namespace: argocd
-spec:
-  destination:
-    name: ''
-    namespace: kubeclarity-system
-    server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
-  source:
-    path: ''
-    repoURL: 'https://openclarity.github.io/kubeclarity'
-    targetRevision: v2.23.1
-    chart: 'kubeclarity'
     helm:
       valueFiles:
         - values.yaml
@@ -202,7 +167,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-core5g
-#  name: metallb-tdw-core5g
+#  name: metallb-adh-core5g
   namespace: argocd
 spec:
   destination:
@@ -231,7 +196,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-huv-core5g
+#  name: ext-metallb-lkh-core5g
   name: ext-metallb-core5g
   namespace: argocd
 spec:
