@@ -1,0 +1,11 @@
+clusters:
+- masterNodes: 1
+  name: core5g
+  subnetOutpost:
+  - subnet-0be87605cd9036c3c
+  subnetRegion:
+  - subnet-0046c189f7a366268
+  - subnet-02ec81f2a20e4b12f
+  - subnet-0942708f5cc2926be
+  version: v1.25.0
+  workerNodes: 1
