@@ -1,5 +1,5 @@
 awslb:
-  enable: true
+  enable: false
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
@@ -63,6 +63,11 @@ prometheus:
   servers:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
+    values:
+      service:
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.11.29.104
   version: main
 skooner:
   enable: true
@@ -70,10 +75,10 @@ skooner:
   - name: core5g
     url: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
     values:
+      service:
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.11.29.103
       ingress:
         enabled: false
-        environment: "edge"
-        className: "nginx"
-        host: longhorn-core5g.tactile5g.int
-        ingressClassName: nginx
   version: main

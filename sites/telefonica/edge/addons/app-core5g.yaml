@@ -1,67 +1,9 @@
 ---
-# Source: Helm cluster addons/templates/aws-lb-controller.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: ext-awslb-core5g
-  namespace: argocd
-spec:
-  project: addons
-  source:
-    repoURL: 'https://github.com/5gplustactile/auto-ztp.git'
-    path: 'templates/cluster-addons/extras/awslb'
-    targetRevision: main
-  destination:
-    server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
-  syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - PrunePropagationPolicy=background
----
-# Source: Helm cluster addons/templates/aws-lb-controller.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: awslb-core5g
-  namespace: argocd
-spec:
-  destination:
-    name: ''
-    namespace: awslb-system
-    server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
-  source:
-    path: ''
-    repoURL: 'https://aws.github.io/eks-charts'
-    targetRevision: 1.6.2
-    chart: aws-load-balancer-controller
-    helm:
-      valueFiles:
-        - values.yaml
-      values: |
-        clusterName: core5g
-  project: addons
-  syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - PruneLast=true
-      - PrunePropagationPolicy=background
----
 # Source: Helm cluster addons/templates/cert-manager.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-sde-core5g
+#  name: cert-manager-psv-core5g
   name: cert-manager-core5g
   namespace: argocd
 spec:
@@ -167,7 +109,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-core5g
-#  name: metallb-adh-core5g
+#  name: metallb-awf-core5g
   namespace: argocd
 spec:
   destination:
@@ -196,7 +138,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-lkh-core5g
+#  name: ext-metallb-qeh-core5g
   name: ext-metallb-core5g
   namespace: argocd
 spec:
@@ -274,7 +216,10 @@ spec:
         - values.yaml
       values: |
         
-        null
+        service:
+          annotations:
+            metallb.universe.tf/loadBalancerIPs: 10.11.29.104
+          type: LoadBalancer
   destination:
     namespace: prometheus-system
     server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
@@ -306,7 +251,12 @@ spec:
         - values.yaml
       values: |
         
-        null
+        ingress:
+          enabled: false
+        service:
+          annotations:
+            metallb.universe.tf/loadBalancerIPs: 10.11.29.103
+          type: LoadBalancer
   destination:
     namespace: skooner-system
     server: https://internal-edge-clusters-core5g-apiserver-988246090.eu-west-3.elb.amazonaws.com:6443
