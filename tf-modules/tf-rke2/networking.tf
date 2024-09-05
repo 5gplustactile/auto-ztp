@@ -35,6 +35,18 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
   }
 }
 
+resource "aws_subnet" "tf_subnet_wvl" {
+  count = local.worker_in_wvl ? 1 : 0
+  vpc_id     = module.vpc.vpc_id
+  cidr_block = var.cidr_block_snet_wvl
+  availability_zone = local.az_wvl
+
+  tags = {
+  Name: "tf-wvl-${local.region}"
+  availability_zone: "wavelength"
+  }
+}
+
 # Create a route table
 resource "aws_route_table" "rtb" {
   vpc_id = module.vpc.vpc_id
@@ -46,11 +58,29 @@ resource "aws_route_table" "rtb" {
   }
 }
 
+# Create a wavelength route table
+resource "aws_route_table" "rtb_wvl" {
+  vpc_id = module.vpc.vpc_id
+
+  # Create a route to the carrier gateway
+  route {
+    cidr_block = "0.0.0.0/0"
+    carrier_gateway_id = aws_ec2_carrier_gateway.cagw.id
+  }
+}
+
 # Associate the route table with the subnet
 resource "aws_route_table_association" "rta" {
   count = local.worker_in_edge || local.control_plane_in_edge || var.enable_bastion_host ? 1 : 0
   subnet_id      = aws_subnet.tf_outpost_subnet_edge[count.index].id
   route_table_id = aws_route_table.rtb.id
+}
+
+# Associate the route table with the wavelength subnet
+resource "aws_route_table_association" "rta_wvl" {
+  count = local.worker_in_wvl ? 1 : 0
+  subnet_id      = aws_subnet.tf_subnet_wvl[count.index].id
+  route_table_id = aws_route_table.rtb_wvl.id
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge_local" {

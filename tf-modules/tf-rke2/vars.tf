@@ -25,6 +25,12 @@ variable "cidr_block_snet_op_local" {
     default = "172.0.5.0/24"
   
 }
+
+variable "cidr_block_snet_wvl" {
+    type = string
+    description = "value of the cidr to the subnet created in the wavelength. This subnet will be used to connect the instances in wavelength zone with others ones. Please keep in mind the var.vpc_cidr variable"
+    default = "172.0.6.0/24"
+}
 variable "key_name" {
     type = string
     description = "name of key"
@@ -81,16 +87,16 @@ variable "workers" {
   description = "Map of worker nodes"
   type = map(object({
     private_ip = string
-    worker_in_edge = bool
+    zone = string
   }))
   default = {
     "backup-cluster-mgmt-rke2-worker-0" = {
       private_ip = "172.0.5.12"
-      worker_in_edge = true
+      zone = "edge"  #cloud be edge or wvl
     }
     "backup-cluster-mgmt-rke2-worker-1" = {
       private_ip = "172.0.5.13"
-      worker_in_edge = true
+      zone = "wvl"
     }
   }
 }

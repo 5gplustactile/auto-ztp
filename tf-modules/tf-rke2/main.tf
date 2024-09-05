@@ -124,12 +124,12 @@ module "ec2_instance_workers" {
 
   ami = local.ami
   name = each.key
-  instance_type = each.value.worker_in_edge ? local.instance_type_outpost : local.instance_type_region
+  instance_type = each.value.zone == "edge" ? local.instance_type_outpost : local.instance_type_region
   key_name = var.key_name
   monitoring = var.monitoring
 #  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
   vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
-  subnet_id = each.value.worker_in_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[0]
+  subnet_id = each.value.zone == "edge" ? aws_subnet.tf_outpost_subnet_edge[0].id : (each.value.zone == "wvl" ? aws_subnet.tf_subnet_wvl[0].id : module.vpc.private_subnets[0])
   associate_public_ip_address = false
   iam_role_description = "IAM Role to EC2 intances"
   create_iam_instance_profile = true
@@ -191,7 +191,7 @@ module "ec2_instance_workers" {
                 sudo amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/amazon-cloudwatch-agent.json
                 
     EOF
-  root_block_device = "${each.value.worker_in_edge ? [] : local.root_block_device}"
+  root_block_device = "${each.value.zone == "edge" ? [] : local.root_block_device}"
   iam_role_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     "${var.name_lb}-AWSLoadBalancerControllerIAMPolicy" = aws_iam_policy.aws_lb_controller.arn
