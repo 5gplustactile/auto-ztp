@@ -61,13 +61,13 @@ resource "aws_route_table" "rtb" {
 # Create a wavelength route table
 resource "aws_route_table" "rtb_wvl" {
   count = local.worker_in_wvl ? 1 : 0
-  
+
   vpc_id = module.vpc.vpc_id
 
   # Create a route to the carrier gateway
   route {
     cidr_block = "0.0.0.0/0"
-    carrier_gateway_id = aws_ec2_carrier_gateway.cagw.id
+    carrier_gateway_id = aws_ec2_carrier_gateway.cagw[count.index].id
   }
 }
 
@@ -82,7 +82,7 @@ resource "aws_route_table_association" "rta" {
 resource "aws_route_table_association" "rta_wvl" {
   count = local.worker_in_wvl ? 1 : 0
   subnet_id      = aws_subnet.tf_subnet_wvl[count.index].id
-  route_table_id = aws_route_table.rtb_wvl.id
+  route_table_id = aws_route_table.rtb_wvl[count.index].id
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge_local" {
