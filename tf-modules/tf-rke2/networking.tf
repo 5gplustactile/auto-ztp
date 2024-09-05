@@ -8,8 +8,8 @@ module "vpc" {
   private_subnets =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)]
   public_subnets  =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)]
 
-  enable_nat_gateway = true
-  single_nat_gateway = true
+  enable_nat_gateway = false
+  single_nat_gateway = false
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = "1"
@@ -19,6 +19,17 @@ module "vpc" {
     "kubernetes.io/role/elb" = "1"
     "kubernetes.io/cluster/cluster-mgmt": "shared"
   }
+  tags = var.tags
+}
+
+resource "aws_nat_gateway" "this" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = module.vpc.public_subnets[1].id
+  tags          = var.tags
+}
+
+resource "aws_eip" "nat" {
+  associate_with_private_ip = null
   tags = var.tags
 }
 

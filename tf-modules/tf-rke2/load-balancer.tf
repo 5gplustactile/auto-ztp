@@ -41,6 +41,20 @@ resource "aws_security_group" "nlb_sg" {
 
 # Create a network load balancer and attach it to the public subnets and security group
 resource "aws_lb" "nlb" {
+  count = local.worker_in_wvl ? 0 : 1
+
+  name               = var.name_lb
+  internal           = true
+  load_balancer_type = "network"
+  subnets            = module.vpc.private_subnets
+  security_groups    = [aws_security_group.nlb_sg.id]
+
+  tags = var.tags
+}
+
+resource "aws_lb" "nlb" {
+  count = local.worker_in_wvl ? 1 : 0
+
   name               = var.name_lb
   internal           = true
   load_balancer_type = "network"
