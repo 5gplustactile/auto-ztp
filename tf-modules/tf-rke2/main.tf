@@ -31,7 +31,7 @@ module "ec2_instance" {
 #  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
   vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
 #  subnet_id = "${var.control_plane_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[0]}"
-  subnet_id = each.value.control_plane_in_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[0]
+  subnet_id = each.value.control_plane_in_edge ? aws_subnet.tf_outpost_subnet_edge[0].id: module.vpc.private_subnets[1]
   associate_public_ip_address = false
   iam_role_description = "IAM Role to EC2 intances"
   create_iam_instance_profile = true
