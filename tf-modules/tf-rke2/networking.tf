@@ -22,9 +22,9 @@ module "vpc" {
   tags = var.tags
 }
 
-resource "aws_nat_gateway" "this" {
+resource "aws_nat_gateway" "natgw" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = module.vpc.public_subnets[1].id
+  subnet_id     = module.vpc.public_subnets[1]
   tags          = var.tags
 }
 
@@ -65,7 +65,7 @@ resource "aws_route_table" "rtb" {
   # Create a route to the Internet gateway
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id  = module.vpc.natgw_ids[0]
+    nat_gateway_id  = aws_nat_gateway.natgw.id
   }
 }
 
