@@ -5,6 +5,27 @@ variable "vpc_cidr" {
   
 }
 
+variable "vpc_cidr_wvl" {
+    type = string
+    description = "cird vpc to wavelength"
+    default = "172.1.0.0/16"
+  
+}
+
+variable "private_subnets_wvl" {
+    type = list(string)
+    description = "list of private subnets of vpc wavelength"
+    default = ["172.1.1.0/24", "172.1.2.0/24", "172.1.3.0/24"]
+  
+}
+
+variable "public_subnets_wvl" {
+    type = list(string)
+    description = "list of public subnets of vpc wavelength"
+    default = ["172.1.48.0/24", "172.1.49.0/24"]
+  
+}
+
 variable "vpc_name" {
     type = string
     description = "name of vpc"

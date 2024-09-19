@@ -8,8 +8,8 @@ module "vpc" {
   private_subnets =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)]
   public_subnets  =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)]
 
-  enable_nat_gateway = false
-  single_nat_gateway = false
+  enable_nat_gateway = true
+  single_nat_gateway = true
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = "1"
@@ -19,17 +19,6 @@ module "vpc" {
     "kubernetes.io/role/elb" = "1"
     "kubernetes.io/cluster/cluster-mgmt": "shared"
   }
-  tags = var.tags
-}
-
-resource "aws_nat_gateway" "natgw" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = module.vpc.public_subnets[1]
-  tags          = var.tags
-}
-
-resource "aws_eip" "nat" {
-  associate_with_private_ip = null
   tags = var.tags
 }
 
@@ -46,18 +35,6 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
   }
 }
 
-resource "aws_subnet" "tf_subnet_wvl" {
-  count = local.worker_in_wvl ? 1 : 0
-  vpc_id     = module.vpc.vpc_id
-  cidr_block = var.cidr_block_snet_wvl
-  availability_zone = local.az_wvl
-
-  tags = {
-  Name: "tf-wvl-${local.region}"
-  availability_zone: "wavelength"
-  }
-}
-
 # Create a route table
 resource "aws_route_table" "rtb" {
   vpc_id = module.vpc.vpc_id
@@ -65,20 +42,20 @@ resource "aws_route_table" "rtb" {
   # Create a route to the Internet gateway
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id  = aws_nat_gateway.natgw.id
+    nat_gateway_id  = module.vpc.natgw_ids[0]
   }
 }
 
-# Create a wavelength route table
-resource "aws_route_table" "rtb_wvl" {
+# Create a tgw wavelength route table
+resource "aws_route_table" "rtb_wvl_tgw" {
   count = local.worker_in_wvl ? 1 : 0
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id = module.vpc_wvl.vpc_id
 
-  # Create a route to the carrier gateway
+  # Create a route to the transit gateway
   route {
-    cidr_block = "0.0.0.0/0"
-    carrier_gateway_id = aws_ec2_carrier_gateway.cagw[count.index].id
+    cidr_block = var.vpc_cidr_wvl
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id[count.index]
   }
 }
 
@@ -89,11 +66,12 @@ resource "aws_route_table_association" "rta" {
   route_table_id = aws_route_table.rtb.id
 }
 
-# Associate the route table with the wavelength subnet
-resource "aws_route_table_association" "rta_wvl" {
+# Associate the tgw wavelength route table with the subnet
+resource "aws_route_table_association" "rta_tgw" {
   count = local.worker_in_wvl ? 1 : 0
-  subnet_id      = aws_subnet.tf_subnet_wvl[count.index].id
-  route_table_id = aws_route_table.rtb_wvl[count.index].id
+  
+  subnet_id      = aws_subnet.tf_outpost_subnet_edge[count.index].id
+  route_table_id = aws_route_table.rtb_wvl_tgw.id
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge_local" {
