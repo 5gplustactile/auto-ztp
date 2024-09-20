@@ -15,7 +15,7 @@ variable "vpc_cidr_wvl" {
 variable "private_subnets_wvl" {
     type = list(string)
     description = "list of private subnets of vpc wavelength"
-    default = ["172.1.1.0/24", "172.1.2.0/24", "172.1.3.0/24"]
+    default = ["172.1.1.0/24", "172.1.2.0/24"]
   
 }
 
