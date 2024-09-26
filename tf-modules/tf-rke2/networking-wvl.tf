@@ -62,7 +62,7 @@ resource "aws_route_table" "rtb_natgw" {
   # Create a route to the Internet gateway
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id  = aws_nat_gateway.natgw.id
+    nat_gateway_id  = aws_nat_gateway.natgw[count.index].id
   }
 }
 
@@ -117,6 +117,6 @@ resource "aws_route_table_association" "rta_wvl_tgw" {
 # Associate the route table tgw with the region subnet
 resource "aws_route_table_association" "rta_wvl_tgw_region" {
   count = local.worker_in_wvl ? 1 : 0
-  subnet_id      = module.vpc_wvl.private_subnets
+  subnet_id      = module.vpc_wvl[count.index].private_subnets
   route_table_id = aws_route_table.rtb_wvl_tgw[count.index].id
 }

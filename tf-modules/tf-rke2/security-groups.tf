@@ -192,7 +192,7 @@ resource "aws_security_group" "sgs_wvl" {
   
   name        = "sgs_az_wavelength"
   description = "sgs to accept traffic from vpc edge or region"
-  vpc_id      = module.vpc_wvl.vpc_id
+  vpc_id      = module.vpc_wvl[count.index].vpc_id
 
   ingress {
     description = "Allow traffic from vpc-edge-region"
