@@ -57,7 +57,7 @@ resource "aws_subnet" "tf_subnet_wvl" {
 resource "aws_route_table" "rtb_natgw" {
   count = local.worker_in_wvl ? 1 : 0
 
-  vpc_id = module.vpc_wvl.vpc_id
+  vpc_id = module.vpc_wvl[count.index].vpc_id
 
   # Create a route to the Internet gateway
   route {
