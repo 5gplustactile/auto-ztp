@@ -97,7 +97,7 @@ resource "aws_route_table_association" "rta_natgw" {
   count = local.worker_in_wvl ? 1 : 0
 
   subnet_id      = module.vpc_wvl.private_subnets
-  route_table_id = aws_route_table.rtb_natgw.id
+  route_table_id = aws_route_table.rtb_natgw[count.index].id
 }
 
 # Associate the route table cgw with the wavelength subnet
