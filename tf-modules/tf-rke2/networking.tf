@@ -47,7 +47,7 @@ resource "aws_route_table" "rtb" {
 }
 
 # Create a tgw wavelength route table
-resource "aws_route_table" "rtb_wvl_tgw" {
+resource "aws_route_table" "rtb_vpc_wvl_tgw" {
   count = local.worker_in_wvl ? 1 : 0
 
   vpc_id = module.vpc_wvl.vpc_id
@@ -71,7 +71,7 @@ resource "aws_route_table_association" "rta_tgw" {
   count = local.worker_in_wvl ? 1 : 0
   
   subnet_id      = aws_subnet.tf_outpost_subnet_edge[count.index].id
-  route_table_id = aws_route_table.rtb_wvl_tgw.id
+  route_table_id = aws_route_table.rtb_vpc_wvl_tgw.id
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge_local" {

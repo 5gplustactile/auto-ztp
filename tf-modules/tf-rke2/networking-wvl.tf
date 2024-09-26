@@ -115,7 +115,7 @@ resource "aws_route_table_association" "rta_wvl_tgw" {
 }
 
 # Associate the route table tgw with the region subnet
-resource "aws_route_table_association" "rta_wvl_tgw" {
+resource "aws_route_table_association" "rta_wvl_tgw_region" {
   count = local.worker_in_wvl ? 1 : 0
   subnet_id      = module.vpc_wvl.private_subnets
   route_table_id = aws_route_table.rtb_wvl_tgw[count.index].id
