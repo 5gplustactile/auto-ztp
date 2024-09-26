@@ -96,7 +96,7 @@ resource "aws_route_table" "rtb_wvl_tgw" {
 resource "aws_route_table_association" "rta_natgw" {
   count = local.worker_in_wvl ? 1 : 0
 
-  subnet_id      = module.vpc_wvl.private_subnets
+  subnet_id      = module.vpc_wvl[count.index].private_subnets
   route_table_id = aws_route_table.rtb_natgw[count.index].id
 }
 
