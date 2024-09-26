@@ -28,7 +28,7 @@ resource "aws_nat_gateway" "natgw" {
   count = local.worker_in_wvl ? 1 : 0
 
   allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = module.vpc_wvl.private_subnets
+  subnet_id     = module.vpc_wvl.private_subnets[count.index]
   tags          = var.tags
 }
 
