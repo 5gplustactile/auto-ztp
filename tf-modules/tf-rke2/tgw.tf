@@ -25,7 +25,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment_edge" {
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment_wvl" {
   count = local.worker_in_wvl ? 1 : 0
 
-  subnet_ids = [ module.vpc_wvl[count.index].public_subnet, module.vpc_wvl[count.index].private_subnets ]
+  subnet_ids = [ module.vpc_wvl[count.index].public_subnets, module.vpc_wvl[count.index].private_subnets ]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   vpc_id = module.vpc_wvl[count.index].vpc_id
   tags = {
