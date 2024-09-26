@@ -55,7 +55,7 @@ resource "aws_route_table" "rtb_vpc_wvl_tgw" {
   # Create a route to the transit gateway
   route {
     cidr_block = var.vpc_cidr_wvl
-    transit_gateway_id = aws_ec2_transit_gateway.tgw.id[count.index]
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
 
