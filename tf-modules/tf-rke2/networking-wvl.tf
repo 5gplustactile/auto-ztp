@@ -27,7 +27,7 @@ module "vpc_wvl" {
 resource "aws_nat_gateway" "natgw" {
   count = local.worker_in_wvl ? 1 : 0
 
-  allocation_id = aws_eip.nat.id
+  allocation_id = aws_eip.nat[count.index].id
   subnet_id     = module.vpc_wvl.private_subnets
   tags          = var.tags
 }
@@ -43,7 +43,7 @@ resource "aws_eip" "nat" {
 resource "aws_subnet" "tf_subnet_wvl" {
   count = local.worker_in_wvl ? 1 : 0
 
-  vpc_id     = module.vpc_wvl.vpc_id
+  vpc_id     = module.vpc_wvl[count.index].vpc_id
   cidr_block = var.cidr_block_snet_wvl
   availability_zone = local.az_wvl
 
@@ -70,7 +70,7 @@ resource "aws_route_table" "rtb_natgw" {
 resource "aws_route_table" "rtb_wvl_cgw" {
   count = local.worker_in_wvl ? 1 : 0
 
-  vpc_id = module.vpc_wvl.vpc_id
+  vpc_id = module.vpc_wvl[count.index].vpc_id
 
   # Create a route to the carrier gateway
   route {
@@ -83,7 +83,7 @@ resource "aws_route_table" "rtb_wvl_cgw" {
 resource "aws_route_table" "rtb_wvl_tgw" {
   count = local.worker_in_wvl ? 1 : 0
 
-  vpc_id = module.vpc_wvl.vpc_id
+  vpc_id = module.vpc_wvl[count.index].vpc_id
 
   # Create a route to the transit gateway
   route {

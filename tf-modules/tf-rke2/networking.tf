@@ -50,7 +50,7 @@ resource "aws_route_table" "rtb" {
 resource "aws_route_table" "rtb_vpc_wvl_tgw" {
   count = local.worker_in_wvl ? 1 : 0
 
-  vpc_id = module.vpc_wvl.vpc_id
+  vpc_id = module.vpc_wvl[count.index].vpc_id
 
   # Create a route to the transit gateway
   route {
