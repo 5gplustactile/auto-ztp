@@ -60,31 +60,19 @@ output "vpc_id" {
 
 output "vpc_arn" {
     description = "Arn of vpc"
-    value = module.vpc.vpc_arn
+    value = aws_vpc.vpc.arn
   
 }
 
 output "vpc_igw_arn" {
   description = "Arn Internet gateway"
-  value = module.vpc.igw_arn
+  value = aws_internet_gateway.vpc_igw.arn
   
 }
 
 output "vpc_igw_id" {
   description = "Id Internet gateway"
-  value = module.vpc.igw_id
-  
-}
-
-output "vpc_natgw_id" {
-  description = "Id Internet gateway"
-  value = module.vpc.natgw_ids
-  
-}
-
-output "vpc_natgw_eni_ids" {
-  description = "List of Network Interface IDs assigned to NAT Gateways"
-  value = module.vpc.natgw_interface_ids
+  value = aws_nat_gateway.vpc_natgw.id
   
 }
 
