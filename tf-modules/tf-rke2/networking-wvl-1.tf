@@ -2,6 +2,9 @@ resource "aws_vpc" "vpc_wvl" {
   count = local.worker_in_wvl ? 1 : 0
 
   cidr_block = var.vpc_cidr_wvl
+  enable_dns_hostnames = true
+  enable_dns_support = true
+
   tags = {
     Name = "${var.vpc_name}-wvl"
   }

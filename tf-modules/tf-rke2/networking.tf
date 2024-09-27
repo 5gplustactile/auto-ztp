@@ -1,47 +1,80 @@
-module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+resource "aws_vpc" "vpc" {
 
-  name = var.vpc_name
-  cidr = var.vpc_cidr
+  cidr_block = var.vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support = true
 
-  azs             = local.azs
-  private_subnets =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)]
-  public_subnets  =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)]
-
-  enable_nat_gateway = false
-  single_nat_gateway = false
-
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+  tags = {
+    Name = "${var.vpc_name}-edge"
   }
-  public_subnet_tags = {
+}
+
+resource "aws_subnet" "vpc_public_subnets" {
+
+  vpc_id            = aws_vpc.vpc.id
+  map_public_ip_on_launch = true
+  cidr_block        = [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)]
+  availability_zone = element(local.azs, count.index)
+
+  tags = {
     "kubernetes.io/role/elb" = "1"
     "kubernetes.io/cluster/cluster-mgmt": "shared"
   }
-  tags = var.tags
 }
 
-resource "aws_eip" "nat_vpc" {
-  associate_with_private_ip = null
+resource "aws_subnet" "vpc_private_subnets" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)]
+  availability_zone = element(local.azs, count.index)
+
   tags = {
-    Name = "${var.vpc_name}"
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/cluster/cluster-mgmt": "shared"
   }
 }
 
-resource "aws_nat_gateway" "natgw_vpc" {
-  allocation_id = aws_eip.nat_vpc.id
-  subnet_id     = module.vpc.public_subnets[0]
+resource "aws_internet_gateway" "vpc_igw" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = var.tags
+}
+
+resource "aws_route_table" "rtb_vpc_public_subnets" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.vpc_igw.id
+  }
+}
+
+resource "aws_route_table_association" "rta_public_subnets" {
+  count = length([for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)])
+
+  subnet_id    = aws_subnet.vpc_public_subnets[count.index].id
+  route_table_id = aws_route_table.rtb_vpc_public_subnets.id
+}
+
+resource "aws_eip" "vpc_nat" {
+  associate_with_private_ip = null
+  tags = {
+    Name = "${var.vpc_name}-edge"
+  }
+}
+
+resource "aws_nat_gateway" "vpc_natgw" {
+  allocation_id = aws_eip.vpc_nat.id
+  subnet_id     = aws_subnet.vpc_public_subnets[0].id
   tags          = var.tags
 }
 
-resource "aws_route_table" "rtb_private_subnets" {
-  vpc_id = module.vpc.vpc_id
+resource "aws_route_table" "rtb_vpc_private" {
+  vpc_id = aws_vpc.vpc.id
 
   # Create a route to the nat gateway
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id  = aws_nat_gateway.natgw_vpc.id
+    nat_gateway_id  = aws_nat_gateway.vpc_natgw.id
   }
 
   # Create a route to the transit gateway
@@ -51,39 +84,16 @@ resource "aws_route_table" "rtb_private_subnets" {
   }
 }
 
-data "aws_route_table" "default" {
-  vpc_id = module.vpc.vpc_id
-
-  filter {
-    name   = "association.main"
-    values = ["true"]
-  }
-}
-
-
-resource "aws_route_table_association" "disassociate_private_subnets" {
-  count = length(module.vpc.private_subnets)
-
-  subnet_id      = element(module.vpc.private_subnets, count.index)
-  route_table_id = data.aws_route_table.default.id
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
 resource "aws_route_table_association" "rta_private_subnets" {
-  count = length(module.vpc.private_subnets)
-
-  subnet_id    = element(module.vpc.private_subnets, count.index)
-  route_table_id = aws_route_table.rtb_private_subnets.id
-
-  depends_on = [aws_route_table_association.disassociate_private_subnets]
+  count = length([for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)])
+  
+  subnet_id    = aws_subnet.vpc_private_subnets[count.index].id
+  route_table_id = aws_route_table.rtb_vpc_private.id
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge" {
   count = local.worker_in_edge || local.control_plane_in_edge || var.enable_bastion_host ? 1 : 0
-  vpc_id     = module.vpc.vpc_id
+  vpc_id     = aws_vpc.vpc.id
   cidr_block = var.cidr_block_snet_op_region
   outpost_arn = local.outpost_arn
   availability_zone = local.az_to_subnet_edge
@@ -96,26 +106,13 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
 
 # Create a route table
 resource "aws_route_table" "rtb" {
-  vpc_id = module.vpc.vpc_id
+  vpc_id = aws_vpc.vpc.id
 
   # Create a route to the Internet gateway
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id  = aws_nat_gateway.natgw_vpc.id
+    nat_gateway_id  = aws_nat_gateway.vpc_natgw.id
   }
-
-  # Create a route to the transit gateway
-  route {
-    cidr_block = var.vpc_cidr_wvl
-    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
-  }
-}
-
-# Create a tgw wavelength route table
-resource "aws_route_table" "rtb_vpc_wvl_tgw" {
-  count = local.worker_in_wvl ? 1 : 0
-
-  vpc_id = module.vpc.vpc_id
 
   # Create a route to the transit gateway
   route {
@@ -133,7 +130,7 @@ resource "aws_route_table_association" "rta" {
 
 resource "aws_subnet" "tf_outpost_subnet_edge_local" {
   count = local.worker_in_edge || local.control_plane_in_edge || var.enable_bastion_host ? 1 : 0
-  vpc_id     = module.vpc.vpc_id
+  vpc_id     = aws_vpc.vpc.id
   cidr_block = var.cidr_block_snet_op_local
   outpost_arn = local.outpost_arn
   availability_zone = "eu-west-3a"
