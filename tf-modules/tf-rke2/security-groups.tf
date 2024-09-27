@@ -199,7 +199,7 @@ resource "aws_security_group" "sgs_wvl" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [var.vpc_cidr_wvl]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {
