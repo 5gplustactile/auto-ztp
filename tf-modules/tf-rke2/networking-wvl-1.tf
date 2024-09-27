@@ -134,8 +134,7 @@ resource "aws_route_table" "rtb_wvl_tgw" {
 
 # Associate the route natgw table with the subnet
 resource "aws_route_table_association" "rta_natgw" {
-#  count = local.worker_in_wvl ? 1 : 0
-  count        = local.worker_in_wvl ? length(var.private_subnets_wvl) : 0
+  count = local.worker_in_wvl ? length(var.private_subnets_wvl) : 0
 
   subnet_id      = aws_subnet.private_subnets[count.index].id
   route_table_id = aws_route_table.rtb_natgw[0].id
@@ -157,7 +156,8 @@ resource "aws_route_table_association" "rta_wvl_tgw" {
 
 # Associate the route table tgw with the region subnet
 resource "aws_route_table_association" "rta_wvl_tgw_region" {
-  count = local.worker_in_wvl ? 1 : 0
+  count = local.worker_in_wvl ? length(var.private_subnets_wvl) : 0
+  
   subnet_id      = aws_subnet.private_subnets[count.index].id
   route_table_id = aws_route_table.rtb_wvl_tgw[0].id
 }
