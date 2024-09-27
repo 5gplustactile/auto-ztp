@@ -51,11 +51,21 @@ resource "aws_route_table" "rtb_private_subnets" {
   }
 }
 
+data "aws_route_table" "default" {
+  vpc_id = module.vpc.vpc_id
+
+  filter {
+    name   = "association.main"
+    values = ["true"]
+  }
+}
+
+
 resource "aws_route_table_association" "disassociate_private_subnets" {
   count = length(module.vpc.private_subnets)
 
   subnet_id      = element(module.vpc.private_subnets, count.index)
-  route_table_id = null
+  route_table_id = data.aws_route_table.default.id
 
   lifecycle {
     create_before_destroy = true
