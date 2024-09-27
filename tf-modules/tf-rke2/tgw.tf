@@ -13,7 +13,7 @@ resource "aws_ec2_transit_gateway" "tgw" {
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment_edge" {
   count = local.worker_in_edge || local.control_plane_in_edge || var.enable_bastion_host ? 1 : 0
 
-  subnet_ids = [ aws_subnet.tf_outpost_subnet_edge[count.index].id ]
+  subnet_ids = [ aws_subnet.tf_outpost_subnet_edge[0].id ]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   vpc_id = module.vpc.vpc_id
   tags = {
@@ -25,7 +25,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment_edge" {
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment_wvl" {
   count = local.worker_in_wvl ? 1 : 0
 
-  subnet_ids = [ aws_subnet.private_subnets[count.index].id ]
+  subnet_ids = [ aws_subnet.tf_subnet_wvl[0].id, aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[1].id ]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   vpc_id = aws_vpc.vpc_wvl[0].id
   tags = {
