@@ -128,7 +128,8 @@ module "ec2_instance_workers" {
   key_name = var.key_name
   monitoring = var.monitoring
 #  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
-  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
+#  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]
+  vpc_security_group_ids = each.value.zone == "wvl" ? [aws_security_group.sgs_wvl.id] : (var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id])
   subnet_id = each.value.zone == "edge" ? aws_subnet.tf_outpost_subnet_edge[0].id : (each.value.zone == "wvl" ? aws_subnet.tf_subnet_wvl[0].id : module.vpc.private_subnets[0])
   associate_public_ip_address = false
   iam_role_description = "IAM Role to EC2 intances"
