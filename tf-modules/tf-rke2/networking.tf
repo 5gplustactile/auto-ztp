@@ -8,8 +8,8 @@ module "vpc" {
   private_subnets =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)]
   public_subnets  =  [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)]
 
-  enable_nat_gateway = true
-  single_nat_gateway = true
+  enable_nat_gateway = false
+  single_nat_gateway = false
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = "1"
@@ -20,6 +20,40 @@ module "vpc" {
     "kubernetes.io/cluster/cluster-mgmt": "shared"
   }
   tags = var.tags
+}
+
+resource "aws_eip" "nat_vpc" {
+  associate_with_private_ip = null
+  tags = {
+    Name = "${var.vpc_name}"
+  }
+}
+
+resource "aws_nat_gateway" "natgw_vpc" {
+  allocation_id = aws_eip.nat_vpc.id
+  subnet_id     = module.vpc.public_subnets[0]
+  tags          = var.tags
+}
+
+resource "aws_route_table" "rtb_private_subnets" {
+  vpc_id = module.vpc.vpc_id
+
+  # Create a route to the nat gateway
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id  = aws_nat_gateway.natgw_vpc.id
+  }
+
+  # Create a route to the transit gateway
+  route {
+    cidr_block = var.vpc_cidr_wvl
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  }
+}
+
+resource "aws_route_table_association" "rta_private_subnets" {
+  subnet_id    = module.vpc.private_subnets
+  route_table_id = aws_route_table.rtb_private_subnets.id
 }
 
 resource "aws_subnet" "tf_outpost_subnet_edge" {
@@ -42,7 +76,7 @@ resource "aws_route_table" "rtb" {
   # Create a route to the Internet gateway
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id  = module.vpc.natgw_ids[0]
+    nat_gateway_id  = aws_nat_gateway.natgw_vpc.id
   }
 
   # Create a route to the transit gateway
