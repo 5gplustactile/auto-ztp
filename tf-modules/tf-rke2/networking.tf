@@ -10,11 +10,11 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_subnet" "vpc_public_subnets" {
-  count = length([for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)])
+  count = length(var.vpc_public_subnets)
 
   vpc_id            = aws_vpc.vpc.id
   map_public_ip_on_launch = true
-  cidr_block        = [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)]
+  cidr_block        = var.vpc_public_subnets[count.index]
   availability_zone = element(local.azs, count.index)
 
   tags = {
@@ -24,9 +24,9 @@ resource "aws_subnet" "vpc_public_subnets" {
 }
 
 resource "aws_subnet" "vpc_private_subnets" {
-  count = length([for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)])
+  count = length(var.vpc_private_subnets)
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 8, k)]
+  cidr_block        = var.vpc_private_subnets[count.index]
   availability_zone = element(local.azs, count.index)
 
   tags = {
