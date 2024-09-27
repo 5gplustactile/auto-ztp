@@ -35,6 +35,8 @@ resource "aws_subnet" "private_subnets" {
 resource "aws_internet_gateway" "igw_wvl" {
   count  = local.worker_in_wvl ? 1 : 0
   vpc_id = aws_vpc.vpc_wvl[0].id
+
+  tags = var.tags
 }
 
 resource "aws_route_table" "rtb_public" {
