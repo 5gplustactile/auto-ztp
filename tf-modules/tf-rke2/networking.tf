@@ -27,7 +27,7 @@ resource "aws_subnet" "tf_outpost_subnet_edge" {
   vpc_id     = module.vpc.vpc_id
   cidr_block = var.cidr_block_snet_op_region
   outpost_arn = local.outpost_arn
-  availability_zone = "eu-west-3a"
+  availability_zone = local.az_to_subnet_edge
 
   tags = {
   Name: "tf-outpost-${local.region}"

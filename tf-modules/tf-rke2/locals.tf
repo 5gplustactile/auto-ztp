@@ -23,6 +23,7 @@ locals {
   instance_type_outpost = var.instance_type_outpost
   instance_type_region = var.instance_type_region
   outpost_arn = var.outpost_arn
+  az_to_subnet_edge = "eu-west-3a"
   root_block_device = [
     {
       volume_type           = "gp2"
