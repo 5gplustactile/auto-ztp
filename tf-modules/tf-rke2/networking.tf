@@ -52,7 +52,9 @@ resource "aws_route_table" "rtb_private_subnets" {
 }
 
 resource "aws_route_table_association" "rta_private_subnets" {
-  subnet_id    = module.vpc.private_subnets
+  count = length(module.vpc.private_subnets)
+
+  subnet_id    = element(module.vpc.private_subnets, count.index)
   route_table_id = aws_route_table.rtb_private_subnets.id
 }
 
