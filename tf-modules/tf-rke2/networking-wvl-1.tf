@@ -59,7 +59,9 @@ resource "aws_eip" "nat" {
   count = local.worker_in_wvl ? 1 : 0
 
   associate_with_private_ip = null
-  tags = var.tags
+  tags = {
+    Name = "${var.vpc_name}-epi"
+  }
 }
 
 resource "aws_nat_gateway" "natgw" {
