@@ -2,7 +2,7 @@
 resource "aws_security_group" "nlb_sg" {
   name = "${var.name_lb}-nlb-sg"
   description = "Allow traffic to NLB"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = aws_vpc.vpc.id
 
   # Allow inbound traffic from anywhere on port 6443
   ingress {
@@ -56,7 +56,7 @@ resource "aws_lb_target_group" "nlb_tg" {
   name     = "${var.name_lb}-nlb-tg-tf-masters"
   port     = 6443
   protocol = "TCP"
-  vpc_id   = module.vpc.vpc_id
+  vpc_id   = aws_vpc.vpc.id
 
   # Use instance ID as target type
   target_type = "instance"
@@ -68,7 +68,7 @@ resource "aws_lb_target_group" "nlb_tg_server" {
   name     = "${var.name_lb}-nlb-tg-tf-server"
   port     = 9345
   protocol = "TCP"
-  vpc_id   = module.vpc.vpc_id
+  vpc_id   = aws_vpc.vpc.id
 
   # Use instance ID as target type
   target_type = "instance"
@@ -81,7 +81,7 @@ resource "aws_lb_target_group" "nlb_tg_edge_workers" {
   name     = "${var.name_lb}-nlb-tg-tf-edge"
   port     = 22
   protocol = "TCP"
-  vpc_id   = module.vpc.vpc_id
+  vpc_id   = aws_vpc.vpc.id
 
   # Use instance ID as target type
   target_type = "instance"

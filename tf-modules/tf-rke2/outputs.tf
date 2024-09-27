@@ -54,7 +54,7 @@ output "sgs_vpc_peering_id" {
 
 output "vpc_id" {
     description = "Id of vpc"
-    value = module.vpc.vpc_id
+    value = aws_vpc.vpc.id
   
 }
 

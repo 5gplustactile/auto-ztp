@@ -15,7 +15,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment_edge" {
 
   subnet_ids = [ aws_subnet.tf_outpost_subnet_edge[0].id, module.vpc.private_subnets[1], module.vpc.private_subnets[2]]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
-  vpc_id = module.vpc.vpc_id
+  vpc_id = aws_vpc.vpc.id
   tags = {
     Name = "tf-tgw-attachment-edge"
   }

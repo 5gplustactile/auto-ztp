@@ -1,7 +1,7 @@
 resource "aws_security_group" "rke2_cluster_sgs" {
   name        = "rke2_cluster_sgs"
   description = "Security group to the first interface"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     description      = "9345 TCP RKE2 supervisor API"
@@ -152,7 +152,7 @@ module "security_group" {
 
   name        = var.vpc_name
   description = "Security group to the lni interface"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_rules       = ["all-all"]
@@ -164,7 +164,7 @@ resource "aws_security_group" "sgs_vpc_peering" {
   count       = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? 1 : 0
   name        = "vpc_peering_cluster_mgmt_to_cluster_api"
   description = "Allow traffic from cluster api"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     description = "Allow traffic from cluster api"
