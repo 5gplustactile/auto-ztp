@@ -1,0 +1,11 @@
+clusters:
+- masterNodes: 1
+  name: demo
+  subnetOutpost:
+  - subnet-0282426331e13b8f8
+  subnetRegion:
+  - subnet-09f8a350bd12f47d7
+  - subnet-0b14c14ceb1face23
+  - subnet-0177b41b12f4bc7c9
+  version: v1.25.0
+  workerNodes: 1
