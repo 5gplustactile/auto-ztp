@@ -45,7 +45,7 @@ spec:
   template:
     spec:
       ami:
-        id: ami-05ad84af46e508c4d
+        id: ami-01e1dc095c936845c
       iamInstanceProfile: control-plane.cluster-api-provider-aws.sigs.k8s.io
       instanceType: c6id.2xlarge
       sshKeyName: tactile5g
@@ -64,7 +64,7 @@ spec:
   template:
     spec:
       ami:
-        id: ami-05ad84af46e508c4d
+        id: ami-01e1dc095c936845c
       iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
       instanceType: c6id.2xlarge
       sshKeyName: tactile5g
