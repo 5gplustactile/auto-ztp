@@ -47,6 +47,8 @@ spec:
       ami:
         id: ami-01e1dc095c936845c
       iamInstanceProfile: control-plane.cluster-api-provider-aws.sigs.k8s.io
+      cloudInit:
+        insecureSkipSecretsManager: true
       instanceType: c6id.2xlarge
       sshKeyName: tactile5g
       rootVolume:
@@ -66,6 +68,8 @@ spec:
       ami:
         id: ami-01e1dc095c936845c
       iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+      cloudInit:
+        insecureSkipSecretsManager: true
       instanceType: c6id.2xlarge
       sshKeyName: tactile5g
       rootVolume:
