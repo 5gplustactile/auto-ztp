@@ -45,7 +45,7 @@ spec:
   template:
     spec:
       ami:
-        id: ami-05d770b12909d1f75
+        id: ami-04c4e49504d527fb0
       iamInstanceProfile: control-plane.cluster-api-provider-aws.sigs.k8s.io
       cloudInit:
         insecureSkipSecretsManager: true
@@ -66,7 +66,7 @@ spec:
   template:
     spec:
       ami:
-        id: ami-05d770b12909d1f75
+        id: ami-04c4e49504d527fb0
       iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
       cloudInit:
         insecureSkipSecretsManager: true
