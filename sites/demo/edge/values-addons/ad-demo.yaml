@@ -1,5 +1,5 @@
 awslb:
-  enable: true
+  enable: false
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
@@ -17,7 +17,7 @@ externalSecret:
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
   version: 0.9.13
 grafana:
-  enable: true
+  enable: false
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
@@ -29,7 +29,7 @@ ingress:
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
   version: 4.9.0
 kubeClarity:
-  enable: true
+  enable: false
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
@@ -39,9 +39,12 @@ longhorn:
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        enabled: false
   version: 1.6.0
 metalLB:
-  enable: false
+  enable: true
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
@@ -58,9 +61,18 @@ prometheus:
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
+    values:
+      ingress:
+        className: nginx
+        enabled: false
+        environment: edge
+      service:
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.11.29.201
   version: main
 skooner:
-  enable: true
+  enable: false
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
