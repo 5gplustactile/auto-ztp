@@ -40,6 +40,8 @@ kubeClarity:
           ingressClassName: nginx
         service:
           type: LoadBalancer
+          annotations:
+            metallb.universe.tf/loadBalancerIPs: 10.11.29.190
   version: v2.23.1
 longhorn:
   enable: true
