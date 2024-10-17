@@ -29,10 +29,17 @@ ingress:
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
   version: 4.9.0
 kubeClarity:
-  enable: false
+  enable: true
   servers:
   - name: demo
     url: https://internal-edge-clusters-demo-apiserver-194354061.eu-west-3.elb.amazonaws.com:6443
+    values:
+      kubeclarity:
+        ingress:
+          enabled: false
+          ingressClassName: nginx
+        service:
+          type: LoadBalancer
   version: v2.23.1
 longhorn:
   enable: true
