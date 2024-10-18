@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-sys-demo
+#  name: cert-manager-msd-demo
   name: cert-manager-demo
   namespace: argocd
 spec:
@@ -89,8 +89,6 @@ spec:
             enabled: false
             ingressClassName: nginx
           service:
-            annotations:
-              metallb.universe.tf/loadBalancerIPs: 10.11.29.190
             type: LoadBalancer
   sources: []
   project: addons
@@ -149,7 +147,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-demo
-#  name: metallb-ojf-demo
+#  name: metallb-wsj-demo
   namespace: argocd
 spec:
   destination:
@@ -178,7 +176,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-nhc-demo
+#  name: ext-metallb-fzj-demo
   name: ext-metallb-demo
   namespace: argocd
 spec:
