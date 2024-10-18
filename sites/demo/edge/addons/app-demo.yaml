@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: cert-manager-nyd-demo
+#  name: cert-manager-fmr-demo
   name: cert-manager-demo
   namespace: argocd
 spec:
@@ -89,7 +89,7 @@ spec:
             enabled: false
             ingressClassName: nginx
           service:
-            type: ClusterIP
+            type: LoadBalancer
   sources: []
   project: addons
   syncPolicy:
@@ -147,7 +147,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb-demo
-#  name: metallb-alh-demo
+#  name: metallb-duw-demo
   namespace: argocd
 spec:
   destination:
@@ -176,7 +176,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-#  name: ext-metallb-rgz-demo
+#  name: ext-metallb-hod-demo
   name: ext-metallb-demo
   namespace: argocd
 spec:
