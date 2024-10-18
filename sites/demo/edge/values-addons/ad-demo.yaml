@@ -39,7 +39,7 @@ kubeClarity:
           enabled: false
           ingressClassName: nginx
         service:
-          type: LoadBalancer
+          type: ClusterIP
   version: v2.23.1
 longhorn:
   enable: true
