@@ -26,3 +26,9 @@ El repositorio contiene:
 ---
 
 **Nota**: Este repositorio es mantenido por el equipo **Telefonica** y se actualiza continuamente (hasta finalizar proyecto) para reflejar mejoras en el **Framework ZTP**.
+
+---
+
+## Licencia
+
+Este projecto es licenciado bajo [Apache](LICENSE)
