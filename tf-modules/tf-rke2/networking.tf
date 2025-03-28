@@ -178,5 +178,5 @@ resource "aws_network_interface_attachment" "attach_local_nic_workers" {
   network_interface_id = aws_network_interface.second_nic_workers[count.index].id
   device_index         = 1
 
-  depends_on = [ module.ec2_instance_workers ]
+  depends_on = [ aws_instance.ec2_instance_workers ]
 }

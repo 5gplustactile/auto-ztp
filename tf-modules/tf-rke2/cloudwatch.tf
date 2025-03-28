@@ -136,7 +136,7 @@ resource "aws_cloudwatch_dashboard" "dashboard_cluster" {
       "height": 6,
       "properties": {
         "metrics": [
-          ${join(",\n", [for instance in values(module.ec2_instance_workers) : "[ \"CWAgent\", \"disk_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\", \"path\", \"/\", \"device\", \"nvme0n1p1\", \"fstype\", \"ext4\" ]"])}
+          ${join(",\n", [for instance in values(aws_instance.ec2_instance_workers) : "[ \"CWAgent\", \"disk_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\", \"path\", \"/\", \"device\", \"nvme0n1p1\", \"fstype\", \"ext4\" ]"])}
         ],
         "period": 1800,
         "stat": "Average",
@@ -152,7 +152,7 @@ resource "aws_cloudwatch_dashboard" "dashboard_cluster" {
       "height": 6,
       "properties": {
         "metrics": [
-          ${join(",\n", [for instance in values(module.ec2_instance_workers) : "[ \"CWAgent\", \"mem_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\" ]"])}
+          ${join(",\n", [for instance in values(aws_instance.ec2_instance_workers) : "[ \"CWAgent\", \"mem_used_percent\", \"InstanceId\", \"${instance.id != "" ? instance.id : ""}\" ]"])}
         ],
         "period": 1800,
         "stat": "Average",

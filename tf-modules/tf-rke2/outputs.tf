@@ -10,12 +10,12 @@ output "ec2_masters_arns" {
 
 output "ec2_workers_ids" {
   description = "The IDs of the EC2 workers"
-  value       = { for k, v in module.ec2_instance_workers : k => v.id }
+  value       = { for k, v in aws_instance.ec2_instance_workers : k => v.id }
 }
 
 output "ec2_workers_arns" {
   description = "The ARNs of the EC2 workers"
-  value       = { for k, v in module.ec2_instance_workers : k => v.arn }
+  value       = { for k, v in aws_instance.ec2_instance_workers : k => v.arn }
 }
 
 output "sgs_rke2_cluster_arn" {

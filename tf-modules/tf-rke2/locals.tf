@@ -1,7 +1,7 @@
 locals {
 
   list_ec2 = [ for v in values(module.ec2_instance): v.id ]
-  list_ec2_workers = [ for v in values(module.ec2_instance_workers): v.id ]
+  list_ec2_workers = [ for v in values(aws_instance.ec2_instance_workers): v.id ]
   list_private_ips = [ for p in values(var.masters): p.private_ip ]
   list_private_ips_workers = [ for p in values(var.workers): p.private_ip ]
   control_plane_in_edge = contains([for v in values(var.masters) : v.control_plane_in_edge], true)
@@ -12,7 +12,7 @@ locals {
   edge_master_ips = [for k, v in var.masters : v.private_ip if v.control_plane_in_edge]
   edge_worker_ips = [for k, v in var.workers : v.private_ip if v.zone == "edge"]
   master_in_edge_ids = { for k, v in module.ec2_instance : k => v.id if var.masters[k].control_plane_in_edge }
-  worker_in_edge_ids = { for k, v in module.ec2_instance_workers : k => v.id if var.workers[k].zone == "edge" }
+  worker_in_edge_ids = { for k, v in aws_instance.ec2_instance_workers : k => v.id if var.workers[k].zone == "edge" }
   account_id          = data.aws_caller_identity.current.account_id
   region              = data.aws_region.current.name
   azs      = ["eu-west-3a", "eu-west-3b", "eu-west-3c"]
