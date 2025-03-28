@@ -131,7 +131,7 @@ module "ec2_instance_workers" {
 #  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]
   vpc_security_group_ids = each.value.zone == "wvl" ? [aws_security_group.sgs_wvl[0].id] : (var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id])
   subnet_id = each.value.zone == "edge" ? aws_subnet.tf_outpost_subnet_edge[0].id : (each.value.zone == "wvl" ? aws_subnet.tf_subnet_wvl[0].id : aws_subnet.vpc_private_subnets[0].id)
-  associate_public_ip_address = each.value.zone == "wvl" ? true : false
+#  associate_public_ip_address = each.value.zone == "wvl" ? true : false
   iam_role_description = "IAM Role to EC2 intances"
   create_iam_instance_profile = true
 
