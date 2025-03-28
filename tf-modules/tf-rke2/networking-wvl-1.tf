@@ -19,7 +19,7 @@ resource "aws_subnet" "public_subnets" {
 
   tags = {
     "kubernetes.io/role/elb" = "1"
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+    "kubernetes.io/cluster/cluster-researcher": "shared"
   }
 }
 
@@ -31,7 +31,7 @@ resource "aws_subnet" "private_subnets" {
 
   tags = {
     "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+    "kubernetes.io/cluster/cluster-researcher": "shared"
   }
 }
 

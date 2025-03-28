@@ -103,10 +103,10 @@ module "ec2_instance" {
   }
 
   instance_tags = {
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+    "kubernetes.io/cluster/cluster-researcher": "shared"
   }
   tags = {
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+    "kubernetes.io/cluster/cluster-researcher": "shared"
   }
 }
 
@@ -201,7 +201,7 @@ module "ec2_instance_workers" {
     "S3AccessPolicy" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/S3AccessPolicy"
   }
   instance_tags = {
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+    "kubernetes.io/cluster/cluster-researcher": "shared"
   }
 
   tags = var.tags
