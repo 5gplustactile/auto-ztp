@@ -50,7 +50,7 @@ spec:
       rootVolume:
         size: 80
       additionalSecurityGroups:
-        - name: "edge-clusters-core5g-sgs"
+        - id: "sg-0af78b66261d0b33f" # sg to allow traffic from vpc-edge and vpc-wavelength
 ---
 # Source: edge-clusters/templates/capi-template-outpost.yaml
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
