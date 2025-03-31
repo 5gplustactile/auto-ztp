@@ -13,11 +13,11 @@ module "vpc" {
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+    "kubernetes.io/cluster/cluster-rese-oupt": "shared"
   }
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
-    "kubernetes.io/cluster/cluster-mgmt": "shared"
+    "kubernetes.io/cluster/cluster-rese-oupt": "shared"
   }
   tags = var.tags
 }
