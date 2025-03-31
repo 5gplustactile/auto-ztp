@@ -45,7 +45,7 @@ resource "aws_lb" "nlb" {
   name               = var.name_lb
   internal           = true
   load_balancer_type = "network"
-  subnets            = [aws_subnet.vpc_private_subnets[1].id, aws_subnet.vpc_private_subnets[2].id]
+  subnets            = [aws_subnet.vpc_private_subnets[1].id, aws_subnet.vpc_private_subnets[2].id, aws_subnet.vpc_private_subnets[3.id]]
   security_groups    = [aws_security_group.nlb_sg.id]
 
   tags = var.tags
