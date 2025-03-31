@@ -14,7 +14,7 @@ locals {
   worker_in_edge_ids = { for k, v in module.ec2_instance_workers : k => v.id if var.workers[k].worker_in_edge }
   account_id          = data.aws_caller_identity.current.account_id
   region              = data.aws_region.current.name
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs      = ["eu-west-3a", "eu-west-3b", "eu-west-3c"]
   username = data.aws_caller_identity.current.user_id
   ami = var.ami
   instance_type_outpost = var.instance_type_outpost
