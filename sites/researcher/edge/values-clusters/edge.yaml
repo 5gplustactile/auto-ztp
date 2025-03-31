@@ -1,0 +1,11 @@
+clusters:
+- masterNodes: 1
+  name: edge
+  subnetOutpost:
+  - subnet-0a689ffb8bc235668
+  subnetRegion:
+  - subnet-05b0e02ae4d537002
+  - subnet-0b6903df91bb61cb2
+  - subnet-0d0d05c10944e510c
+  version: v1.25.0
+  workerNodes: 1
