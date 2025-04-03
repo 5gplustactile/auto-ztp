@@ -128,6 +128,11 @@ resource "aws_route_table" "rtb_wvl_cgw" {
     cidr_block = var.vpc_cidr
     transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
+  # Create a route to the other netwrok
+  route {
+    cidr_block = "172.3.0.0/16"
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  }
 }
 
 # Associate the route table cgw and tgw with the wavelength subnet

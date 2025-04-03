@@ -27,6 +27,7 @@ module "ec2_instance" {
 #  instance_type = "${var.control_plane_edge ? local.instance_type_outpost : local.instance_type_region}"
   instance_type = each.value.control_plane_in_edge ? local.instance_type_outpost : local.instance_type_region
   key_name = var.key_name
+  source_dest_check = false
   monitoring = var.monitoring
 #  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
   vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]  
@@ -126,6 +127,7 @@ module "ec2_instance_workers" {
   name = each.key
   instance_type = each.value.zone == "edge" ? local.instance_type_outpost : local.instance_type_region
   key_name = var.key_name
+  source_dest_check = false
   monitoring = var.monitoring
 #  vpc_security_group_ids = [aws_security_group.rke2_cluster_sgs.id,aws_security_group.sgs_vpc_peering.id]
 #  vpc_security_group_ids = var.cidr_block_vpc_digital_twins != null && var.cidr_block_vpc_digital_twins != "" ? [aws_security_group.rke2_cluster_sgs.id, aws_security_group.sgs_vpc_peering[0].id] : [aws_security_group.rke2_cluster_sgs.id]

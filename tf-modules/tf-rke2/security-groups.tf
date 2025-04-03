@@ -136,6 +136,20 @@ resource "aws_security_group" "rke2_cluster_sgs" {
     protocol         = "tcp"
     cidr_blocks      = [var.vpc_cidr, var.vpc_cidr_wvl]
   }
+  ingress {
+    description      = "UMA Internal Network"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["10.11.29.0/24"]
+  }
+  ingress {
+    description      = "Edge UMA network"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["172.3.0.0/16"]
+  }
   egress {
     from_port        = 0
     to_port          = 0
@@ -201,7 +215,13 @@ resource "aws_security_group" "sgs_wvl" {
     protocol    = "-1"
     cidr_blocks = [var.vpc_cidr]
   }
-
+  ingress {
+    description      = "Edge UMA network"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["172.3.0.0/16"]
+  }
   egress {
     from_port        = 0
     to_port          = 0

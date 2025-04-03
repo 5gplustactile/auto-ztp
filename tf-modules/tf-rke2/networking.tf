@@ -84,6 +84,11 @@ resource "aws_route_table" "rtb_vpc_private" {
     cidr_block = var.vpc_cidr_wvl
     transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
+  # Create a route to the other netwrok
+  route {
+    cidr_block = "172.3.0.0/16"
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  }
 }
 
 resource "aws_route_table_association" "rta_private_subnets" {
@@ -121,6 +126,12 @@ resource "aws_route_table" "rtb" {
     cidr_block = var.vpc_cidr_wvl
     transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
+
+  # Create a route to the other netwrok
+  route {
+    cidr_block = "172.3.0.0/16"
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  }
 }
 
 # Associate the route table with the subnet
@@ -149,6 +160,7 @@ resource "aws_network_interface" "second_nic_masters" {
   subnet_id = aws_subnet.tf_outpost_subnet_edge_local[0].id
   private_ip  = local.edge_master_ips[count.index]
   security_groups = [ module.security_group.security_group_id ]
+  source_dest_check = false
   tags = var.tags
   
 }
@@ -158,6 +170,7 @@ resource "aws_network_interface" "second_nic_workers" {
   subnet_id = aws_subnet.tf_outpost_subnet_edge_local[0].id
   private_ip  = local.edge_worker_ips[count.index]
   security_groups = [ module.security_group.security_group_id ]
+  source_dest_check = false
   tags = var.tags
   
 }
