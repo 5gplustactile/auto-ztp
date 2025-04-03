@@ -13,9 +13,9 @@ variable "vpc_private_subnets" {
 }
 
 variable "vpc_public_subnets" {
-    type = list(string)
-    description = "list of public subnets of vpc wavelength"
-    default = ["172.2.48.0/24", "172.2.49.0/24"]
+  type = list(string)
+  description = "list of public subnets of vpc wavelength"
+  default = [ "172.2.48.0/24", "172.2.49.0/24" ]
   
 }
 
