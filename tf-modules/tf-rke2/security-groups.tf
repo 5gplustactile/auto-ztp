@@ -150,6 +150,20 @@ resource "aws_security_group" "rke2_cluster_sgs" {
     protocol         = "-1"
     cidr_blocks      = ["172.3.0.0/16"]
   }
+  ingress {
+    description = "Accept all traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description      = "Allow all traffic wvl worker"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["192.168.0.0/16"]
+  }
   egress {
     from_port        = 0
     to_port          = 0
@@ -221,6 +235,20 @@ resource "aws_security_group" "sgs_wvl" {
     to_port          = 0
     protocol         = "-1"
     cidr_blocks      = ["172.3.0.0/16"]
+  }
+  ingress {
+    description      = "Allow traffic to test the region, outpost and wvl latency"
+    from_port        = 31900
+    to_port          = 31900
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  ingress {
+    description      = "Allow all traffic wvl worker"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
   }
   egress {
     from_port        = 0
