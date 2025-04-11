@@ -44,13 +44,17 @@ metadata:
 spec:
   template:
     spec:
+      ami:
+        id: ami-0e055256a6dca749a
       iamInstanceProfile: control-plane.cluster-api-provider-aws.sigs.k8s.io
+      cloudInit:
+        insecureSkipSecretsManager: true
       instanceType: c6id.2xlarge
       sshKeyName: tactile5g
       rootVolume:
         size: 80
       additionalSecurityGroups:
-        - id: "sg-0af78b66261d0b33f" # sg to allow traffic from vpc-edge and vpc-wavelength
+        - name: "edge-clusters-core5g-sgs"
 ---
 # Source: edge-clusters/templates/capi-template-outpost.yaml
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
@@ -61,7 +65,11 @@ metadata:
 spec:
   template:
     spec:
+      ami:
+        id: ami-0e055256a6dca749a
       iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+      cloudInit:
+        insecureSkipSecretsManager: true
       instanceType: c6id.2xlarge
       sshKeyName: tactile5g
       rootVolume:
